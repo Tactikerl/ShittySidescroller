@@ -1,8 +1,9 @@
+import Phaser from "./lib/phaser.js";
 import { MyScene } from "./MainScene.js";
 var config = {
   type: Phaser.AUTO,
-  width: 1920,
-  height: 1080,
+  width: 720,
+  height: 480,
   scene: [MyScene],
   parent: "game-wrapper", //<div id="game-wrapper"></div>
   physics: {

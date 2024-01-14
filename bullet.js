@@ -1,4 +1,5 @@
-export class Bullet extends Phaser.GameObjects.Image {
+import Phaser from "./lib/phaser.js";
+export class Bullet extends Phaser.Physics.Arcade.Image {
   constructor(scene) {
     super(scene, 0, 0, "bullet");
 
@@ -21,7 +22,7 @@ export class Bullet extends Phaser.GameObjects.Image {
     this.x += this.speed * delta;
     console.log(this.x);
 
-    if (this.x > 1920) {
+    if (this.x > 720) {
       this.setActive(false);
       this.setVisible(false);
     }
