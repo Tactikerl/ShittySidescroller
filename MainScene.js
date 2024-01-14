@@ -1,5 +1,6 @@
 import Phaser from "./lib/phaser.js";
 import { Bullet } from "./bullet.js";
+import { Enemy } from "./enemy.js";
 export class MyScene extends Phaser.Scene {
   lastFired = 0;
   speed;
@@ -24,9 +25,14 @@ export class MyScene extends Phaser.Scene {
     this.add.text(0, 0, "Shitty SideScroller");
     this.player = this.physics.add.sprite(100, 240, "player", 0);
 
-    this.enemy = this.physics.add.image(600, 240, "enemy");
-    this.enemy.flipX = true;
-    this.enemy.setVelocityX(-100);
+    // this.enemy = this.physics.add.image(600, 240, "enemy");
+    // this.enemy.flipX = true;
+    // this.enemy.setVelocityX(-100);
+    this.enemies = this.physics.add.group({
+      classType: Enemy,
+      maxSize: 10,
+      runChildUpdate: true,
+    });
 
     this.keyboard = this.input.keyboard.createCursorKeys();
     this.keySpace = this.input.keyboard.addKey(
@@ -42,7 +48,7 @@ export class MyScene extends Phaser.Scene {
     this.speed = 150;
 
     this.physics.add.overlap(
-      this.enemy,
+      this.enemies,
       this.bullets,
       this.enemyHit,
       null,
@@ -50,7 +56,7 @@ export class MyScene extends Phaser.Scene {
     );
 
     this.timedEvent = this.time.addEvent({
-      delay: 3000,
+      delay: 1500,
       callback: this.respawnEnemy,
       callbackScope: this,
       loop: true,
@@ -88,10 +94,6 @@ export class MyScene extends Phaser.Scene {
         this.lastFired = time + 90;
       }
     }
-
-    if (this.enemy.x < -16) {
-      this.enemy.setPosition(740, this.enemy.y);
-    }
   }
 
   enemyHit(enemy, bullet) {
@@ -100,8 +102,13 @@ export class MyScene extends Phaser.Scene {
   }
 
   respawnEnemy() {
-    let enemy = this.physics.add.image(600, 240, "enemy");
-    enemy.flipX = true;
-    enemy.setVelocityX(-100);
+    //Span enemy
+    const enemy = this.enemies.get();
+
+    if (enemy) {
+      const x = 750;
+      const y = Phaser.Math.Between(20, 460);
+      enemy.spawn(x, y);
+    }
   }
 }
