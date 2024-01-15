@@ -11,6 +11,7 @@ export class MyScene extends Phaser.Scene {
   preload() {
     //Assets to be loaded before create() is called
 
+    this.load.image("retroFont", "../assets/numbers.png");
     this.load.image("bullet", "/assets/bullet.png");
     this.load.image("enemy", "/assets/enemy.png");
     this.load.spritesheet("background", "/assets/background.png", { frameWidth: 128, frameHeight: 128 });
@@ -38,7 +39,6 @@ export class MyScene extends Phaser.Scene {
       });
     this.backgroundAnim = this.add.sprite(0, 0, "background").setVisible(false).play('backgroundAnim');
 
-    this.add.text(0, 0, "Shitty SideScroller");
     this.player = this.physics.add.sprite(100, 240, "player", 0);
 
     // this.enemy = this.physics.add.image(600, 240, "enemy");
@@ -85,6 +85,8 @@ export class MyScene extends Phaser.Scene {
       callbackScope: this,
       loop: true,
     });
+
+    this.createRetroFonts();
   }
 
   update(time, delta) {
@@ -126,6 +128,8 @@ export class MyScene extends Phaser.Scene {
   enemyHit(enemy, bullet) {
     bullet.hit();
     enemy.disableBody(true, true);
+    this.score += 10;
+    this.scoreText.text = this.score;
   }
 
   respawnEnemy() {
@@ -142,5 +146,31 @@ export class MyScene extends Phaser.Scene {
   playerHit(player, enemy) {
     player.disableBody(true, true);
     this.scene.restart();
+  }
+
+  createRetroFonts() {
+    this.score = 0;
+    var config = {
+      image: "retroFont",
+      width: 16,
+      height: 16,
+      chars: "1234567890",
+      charsPerRow: 10,
+      spacing: { x: 0, y: 0 }
+    };
+    this.cache.bitmapFont.add(
+      "retroFont",
+      Phaser.GameObjects.RetroFont.Parse(this, config)
+    );
+
+    this.scoreText = this.add.bitmapText(
+      5,
+      5,
+      "retroFont",
+      this.score
+    );
+
+    this.children.bringToTop(this.scoreText);
+    //this.scoreText.setScrollFactor(0);
   }
 }
