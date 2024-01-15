@@ -13,6 +13,7 @@ export class MyScene extends Phaser.Scene {
 
     this.load.image("bullet", "/assets/bullet.png");
     this.load.image("enemy", "/assets/enemy.png");
+    this.load.spritesheet("background", "/assets/background.png", { frameWidth: 128, frameHeight: 128 });
     this.load.spritesheet(
       "player",
       "/assets/PlayerPlaceholderSpritesheet.png",
@@ -22,6 +23,21 @@ export class MyScene extends Phaser.Scene {
 
   create() {
     //Adding sprites, sounds, etc...
+    this.background = this.add.tileSprite(0, 0, this.scale.width * 2, this.scale.height * 2, "background")
+      .setScale(0.5, 0.5)
+      .setOrigin(0,0);
+      this.anims.create({
+        key:  "backgroundAnim",
+        frames:  this.anims.generateFrameNumbers("background",  {
+              start:  0,
+              end:  1,
+              first:  0
+        }),
+        frameRate:  3,
+        repeat:  -1
+      });
+    this.backgroundAnim = this.add.sprite(0, 0, "background").setVisible(false).play('backgroundAnim');
+
     this.add.text(0, 0, "Shitty SideScroller");
     this.player = this.physics.add.sprite(100, 240, "player", 0);
 
@@ -51,6 +67,14 @@ export class MyScene extends Phaser.Scene {
       this.enemies,
       this.bullets,
       this.enemyHit,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.enemies,
+      this.playerHit,
       null,
       this
     );
@@ -94,6 +118,9 @@ export class MyScene extends Phaser.Scene {
         this.lastFired = time + 90;
       }
     }
+
+    this.background.setFrame(this.backgroundAnim.frame.name)
+    this.background.tilePositionX += 3;
   }
 
   enemyHit(enemy, bullet) {
@@ -110,5 +137,10 @@ export class MyScene extends Phaser.Scene {
       const y = Phaser.Math.Between(20, 460);
       enemy.spawn(x, y);
     }
+  }
+
+  playerHit(player, enemy) {
+    player.disableBody(true, true);
+    this.scene.restart();
   }
 }
