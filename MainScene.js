@@ -11,13 +11,13 @@ export class MyScene extends Phaser.Scene {
   preload() {
     //Assets to be loaded before create() is called
 
-    this.load.image("retroFont", "../assets/numbers.png");
-    this.load.image("bullet", "/assets/bullet.png");
-    this.load.image("enemy", "/assets/enemy.png");
-    this.load.spritesheet("background", "/assets/background.png", { frameWidth: 128, frameHeight: 128 });
+    this.load.image("retroFont", "assets/numbers.png");
+    this.load.image("bullet", " assets/bullet.png");
+    this.load.image("enemy", "assets/enemy.png");
+    this.load.spritesheet("background", "assets/background.png", { frameWidth: 128, frameHeight: 128 });
     this.load.spritesheet(
       "player",
-      "/assets/PlayerPlaceholderSpritesheet.png",
+      "assets/PlayerPlaceholderSpritesheet.png",
       { frameWidth: 32, frameHeight: 32 }
     );
   }
