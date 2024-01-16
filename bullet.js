@@ -29,7 +29,6 @@ export class Bullet extends Phaser.Physics.Arcade.Image {
 
   update(time, delta) {
     this.x += this.speed * delta;
-    console.log(this.x);
 
     if (this.x > 720) {
       this.disableBody(

@@ -1,6 +1,7 @@
 import Phaser from "./lib/phaser.js";
 import { Bullet } from "./bullet.js";
 import { Enemy } from "./enemy.js";
+import { Collectible } from "./collectible.js";
 export class MyScene extends Phaser.Scene {
   lastFired = 0;
   speed;
@@ -14,30 +15,43 @@ export class MyScene extends Phaser.Scene {
     this.load.image("retroFont", "assets/numbers.png");
     this.load.image("bullet", " assets/bullet.png");
     this.load.image("enemy", "assets/enemy.png");
-    this.load.spritesheet("background", "assets/background.png", { frameWidth: 128, frameHeight: 128 });
-    this.load.spritesheet(
-      "player",
-      "assets/PlayerPlaceholderSpritesheet.png",
-      { frameWidth: 32, frameHeight: 32 }
-    );
+    this.load.image("collectible", "assets/collectible.png");
+    this.load.spritesheet("background", "assets/background.png", {
+      frameWidth: 128,
+      frameHeight: 128,
+    });
+    this.load.spritesheet("player", "assets/PlayerPlaceholderSpritesheet.png", {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
   }
 
   create() {
     //Adding sprites, sounds, etc...
-    this.background = this.add.tileSprite(0, 0, this.scale.width * 2, this.scale.height * 2, "background")
+    this.background = this.add
+      .tileSprite(
+        0,
+        0,
+        this.scale.width * 2,
+        this.scale.height * 2,
+        "background"
+      )
       .setScale(0.5, 0.5)
-      .setOrigin(0,0);
-      this.anims.create({
-        key:  "backgroundAnim",
-        frames:  this.anims.generateFrameNumbers("background",  {
-              start:  0,
-              end:  1,
-              first:  0
-        }),
-        frameRate:  3,
-        repeat:  -1
-      });
-    this.backgroundAnim = this.add.sprite(0, 0, "background").setVisible(false).play('backgroundAnim');
+      .setOrigin(0, 0);
+    this.anims.create({
+      key: "backgroundAnim",
+      frames: this.anims.generateFrameNumbers("background", {
+        start: 0,
+        end: 1,
+        first: 0,
+      }),
+      frameRate: 3,
+      repeat: -1,
+    });
+    this.backgroundAnim = this.add
+      .sprite(0, 0, "background")
+      .setVisible(false)
+      .play("backgroundAnim");
 
     this.player = this.physics.add.sprite(100, 240, "player", 0);
 
@@ -47,6 +61,12 @@ export class MyScene extends Phaser.Scene {
     this.enemies = this.physics.add.group({
       classType: Enemy,
       maxSize: 10,
+      runChildUpdate: true,
+    });
+
+    this.collectibles = this.physics.add.group({
+      classType: Collectible,
+      maxSize: 1,
       runChildUpdate: true,
     });
 
@@ -79,9 +99,24 @@ export class MyScene extends Phaser.Scene {
       this
     );
 
-    this.timedEvent = this.time.addEvent({
+    this.physics.add.overlap(
+      this.player,
+      this.collectibles,
+      this.collectCollectible,
+      null,
+      this
+    );
+
+    this.enemyEvent = this.time.addEvent({
       delay: 1500,
       callback: this.respawnEnemy,
+      callbackScope: this,
+      loop: true,
+    });
+
+    this.collectibleEvent = this.time.addEvent({
+      delay: 30000,
+      callback: this.spawnCollectible,
       callbackScope: this,
       loop: true,
     });
@@ -121,7 +156,7 @@ export class MyScene extends Phaser.Scene {
       }
     }
 
-    this.background.setFrame(this.backgroundAnim.frame.name)
+    this.background.setFrame(this.backgroundAnim.frame.name);
     this.background.tilePositionX += 3;
   }
 
@@ -143,6 +178,22 @@ export class MyScene extends Phaser.Scene {
     }
   }
 
+  spawnCollectible() {
+    const collectible = this.collectibles.get();
+
+    if (collectible) {
+      const x = Phaser.Math.Between(20, this.scale.width - 20);
+      const y = Phaser.Math.Between(20, this.scale.height - 20);
+      collectible.spawn(x, y, this.time.now);
+    }
+  }
+
+  collectCollectible(player, collectible) {
+    collectible.collectedOrFaded();
+    this.score += 25;
+    this.scoreText.text = this.score;
+  }
+
   playerHit(player, enemy) {
     player.disableBody(true, true);
     this.scene.restart();
@@ -156,19 +207,14 @@ export class MyScene extends Phaser.Scene {
       height: 16,
       chars: "1234567890",
       charsPerRow: 10,
-      spacing: { x: 0, y: 0 }
+      spacing: { x: 0, y: 0 },
     };
     this.cache.bitmapFont.add(
       "retroFont",
       Phaser.GameObjects.RetroFont.Parse(this, config)
     );
 
-    this.scoreText = this.add.bitmapText(
-      5,
-      5,
-      "retroFont",
-      this.score
-    );
+    this.scoreText = this.add.bitmapText(5, 5, "retroFont", this.score);
 
     this.children.bringToTop(this.scoreText);
     //this.scoreText.setScrollFactor(0);
