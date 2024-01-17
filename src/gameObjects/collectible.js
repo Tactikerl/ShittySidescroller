@@ -1,4 +1,4 @@
-import Phaser from "./lib/phaser.js";
+import Phaser from "../lib/phaser.js";
 export class Collectible extends Phaser.Physics.Arcade.Image {
   constructor(scene) {
     super(scene, 0, 0, "collectible");
@@ -40,7 +40,6 @@ export class Collectible extends Phaser.Physics.Arcade.Image {
         duration: 500,
         loop: -1,
         onUpdate: (tween) => {
-          console.log(tween.getValue());
           const value = Math.floor(tween.getValue());
 
           this.setTint(Phaser.Display.Color.GetColor(value, value, value));

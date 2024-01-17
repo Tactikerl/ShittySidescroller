@@ -1,10 +1,13 @@
 import Phaser from "./lib/phaser.js";
-import { MyScene } from "./MainScene.js";
+import { Boot } from "./scenes/Boot.js";
+import { Play } from "./scenes/Play.js";
+import { PlayUI } from "./scenes/PlayUI.js";
+
 var config = {
   type: Phaser.AUTO,
   width: 720,
   height: 480,
-  scene: [MyScene],
+  scene: [Boot, Play, PlayUI],
   parent: "game-wrapper", //<div id="game-wrapper"></div>
   physics: {
     default: "arcade",

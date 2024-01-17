@@ -1,4 +1,5 @@
-import Phaser from "./lib/phaser.js";
+import Phaser from "../lib/phaser.js";
+
 export class Enemy extends Phaser.Physics.Arcade.Image {
   constructor(scene) {
     super(scene, 0, 0, "enemy");
