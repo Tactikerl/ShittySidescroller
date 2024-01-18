@@ -3,6 +3,7 @@ import { Player } from "../gameObjects/player.js";
 import { Bullet } from "../gameObjects/bullet.js";
 import { Enemy } from "../gameObjects/enemy.js";
 import { Collectible } from "../gameObjects/collectible.js";
+import { EnemyBullet } from "../gameObjects/enemyBullet.js";
 import eventsCenter from "../EventsCenter.js";
 
 export class Play extends Phaser.Scene {
@@ -32,6 +33,20 @@ export class Play extends Phaser.Scene {
       runChildUpdate: true,
     });
 
+    this.enemyBullets = this.physics.add.group({
+      classType: EnemyBullet,
+      maxSize: 20,
+      runChildUpdate: true,
+    });
+
+    eventsCenter.on("enemy-shoot", (config) => {
+      const bullet = this.enemyBullets.get();
+
+      if (bullet) {
+        bullet.fire(config.x, config.y);
+      }
+    });
+
     this.player = new Player(this, 100, 240, this.bullets);
 
     this.physics.add.overlap(
@@ -54,6 +69,14 @@ export class Play extends Phaser.Scene {
       this.player,
       this.collectibles,
       this.collectCollectible,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.enemyBullets,
+      this.enemyBulletHit,
       null,
       this
     );
@@ -115,6 +138,11 @@ export class Play extends Phaser.Scene {
     enemy.disableBody(true, true);
     this.score += 10;
     eventsCenter.emit("update-score", this.score);
+  }
+
+  enemyBulletHit(player, enemyBullet) {
+    enemyBullet.hit();
+    this.playerHit(player);
   }
 
   respawnEnemy() {

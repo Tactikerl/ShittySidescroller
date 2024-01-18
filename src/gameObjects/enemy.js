@@ -1,10 +1,26 @@
 import Phaser from "../lib/phaser.js";
+// import { EnemyBullet } from "./enemyBullet.js";
+import eventsCenter from "../EventsCenter.js";
 
 export class Enemy extends Phaser.Physics.Arcade.Image {
   constructor(scene) {
     super(scene, 0, 0, "enemy");
     this.setFlipX(true);
     this.speed = 200;
+    // this.bulletList = [
+    //   scene.physics.add
+    //     .image(0, 0, "bullet")
+    //     .disableBody(true, true)
+    //     .setTint(0xfc7703),
+    //   scene.physics.add
+    //     .image(0, 0, "bullet")
+    //     .disableBody(true, true)
+    //     .setTint(0xfc7703),
+    //   scene.physics.add
+    //     .image(0, 0, "bullet")
+    //     .disableBody(true, true)
+    //     .setTint(0xfc7703),
+    // ];
   }
 
   spawn(x, y) {
@@ -20,6 +36,13 @@ export class Enemy extends Phaser.Physics.Arcade.Image {
     );
 
     this.setVelocityX(-this.speed);
+
+    this.shootEvent = this.scene.time.addEvent({
+      delay: 250,
+      callback: this.shootBullet,
+      callbackScope: this,
+      repeat: 2,
+    });
   }
 
   update(time, delta) {
@@ -30,5 +53,20 @@ export class Enemy extends Phaser.Physics.Arcade.Image {
         true // Hide sprite (visible=false)
       );
     }
+    // for (let i = 0; i < this.bulletList.length; i++) {
+    //   const bullet = this.bulletList[i];
+    //   if (bullet.visible) {
+    //     if (bullet.x < -16) {
+    //       bullet.disableBody(true, true);
+    //     }
+    //   }
+    // }
+  }
+
+  shootBullet() {
+    const x = this.x;
+    const y = this.y;
+
+    eventsCenter.emit("enemy-shoot", { x, y });
   }
 }

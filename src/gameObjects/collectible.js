@@ -34,20 +34,24 @@ export class Collectible extends Phaser.Physics.Arcade.Image {
     const elapsedTime = time - this.spawnTime;
     if (elapsedTime > 5000 && !this.isFading) {
       this.isFading = true;
-      this.fadingTween = this.scene.tweens.addCounter({
-        from: 255,
-        to: 0,
-        duration: 500,
-        loop: -1,
-        onUpdate: (tween) => {
-          const value = Math.floor(tween.getValue());
-
-          this.setTint(Phaser.Display.Color.GetColor(value, value, value));
-        },
-      });
+      this.triggerFade();
     }
     if (elapsedTime > 10000) {
       this.collectedOrFaded();
     }
+  }
+
+  triggerFade() {
+    this.fadingTween = this.scene.tweens.addCounter({
+      from: 255,
+      to: 0,
+      duration: 500,
+      loop: -1,
+      onUpdate: (tween) => {
+        const value = Math.floor(tween.getValue());
+
+        this.setTint(Phaser.Display.Color.GetColor(value, value, value));
+      },
+    });
   }
 }
