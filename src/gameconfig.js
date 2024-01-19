@@ -8,7 +8,7 @@ var config = {
   width: 720,
   height: 480,
   scene: [Boot, Play, PlayUI],
-  parent: "game-wrapper", //<div id="game-wrapper"></div>
+  parent: "game-wrapper",
   physics: {
     default: "arcade",
     arcade: {

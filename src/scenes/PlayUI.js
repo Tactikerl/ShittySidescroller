@@ -28,6 +28,18 @@ export class PlayUI extends Phaser.Scene {
 
     //this.children.bringToTop(this.scoreText);
     //this.scoreText.setScrollFactor(0);
+
+    this.keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+  }
+
+  update() {
+    if (Phaser.Input.Keyboard.JustDown(this.keyP)) {
+      if (this.scene.isPaused("Play")) {
+        this.scene.resume("Play");
+      } else {
+        this.scene.pause("Play");
+      }
+    }
   }
 
   updateScore(score) {

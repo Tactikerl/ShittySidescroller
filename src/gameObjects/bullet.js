@@ -4,7 +4,7 @@ export class Bullet extends Phaser.Physics.Arcade.Image {
   constructor(scene) {
     super(scene, 0, 0, "bullet");
 
-    this.speed = Phaser.Math.GetSpeed(400, 1);
+    this.speed = 400;
   }
 
   fire(x, y) {
@@ -18,6 +18,8 @@ export class Bullet extends Phaser.Physics.Arcade.Image {
       true, // Activate sprite
       true // Show sprite
     );
+
+    this.setVelocityX(this.speed);
   }
 
   hit() {
@@ -29,8 +31,6 @@ export class Bullet extends Phaser.Physics.Arcade.Image {
   }
 
   update(time, delta) {
-    this.x += this.speed * delta;
-
     if (this.x > 720) {
       this.disableBody(
         // Stop and disable physics body

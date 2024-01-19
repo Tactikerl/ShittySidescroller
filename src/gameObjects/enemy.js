@@ -7,20 +7,6 @@ export class Enemy extends Phaser.Physics.Arcade.Image {
     super(scene, 0, 0, "enemy");
     this.setFlipX(true);
     this.speed = 200;
-    // this.bulletList = [
-    //   scene.physics.add
-    //     .image(0, 0, "bullet")
-    //     .disableBody(true, true)
-    //     .setTint(0xfc7703),
-    //   scene.physics.add
-    //     .image(0, 0, "bullet")
-    //     .disableBody(true, true)
-    //     .setTint(0xfc7703),
-    //   scene.physics.add
-    //     .image(0, 0, "bullet")
-    //     .disableBody(true, true)
-    //     .setTint(0xfc7703),
-    // ];
   }
 
   spawn(x, y) {
@@ -53,14 +39,6 @@ export class Enemy extends Phaser.Physics.Arcade.Image {
         true // Hide sprite (visible=false)
       );
     }
-    // for (let i = 0; i < this.bulletList.length; i++) {
-    //   const bullet = this.bulletList[i];
-    //   if (bullet.visible) {
-    //     if (bullet.x < -16) {
-    //       bullet.disableBody(true, true);
-    //     }
-    //   }
-    // }
   }
 
   shootBullet() {
