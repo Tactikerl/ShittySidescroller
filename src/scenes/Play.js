@@ -2,6 +2,7 @@ import Phaser from "../lib/phaser.js";
 import { Player } from "../gameObjects/player.js";
 import { Bullet } from "../gameObjects/bullet.js";
 import { Enemy } from "../gameObjects/enemy.js";
+import { ZigzagEnemy } from "../gameObjects/zigzagEnemy.js";
 import { Collectible } from "../gameObjects/collectible.js";
 import { EnemyBullet } from "../gameObjects/enemyBullet.js";
 import eventsCenter from "../EventsCenter.js";
@@ -17,6 +18,12 @@ export class Play extends Phaser.Scene {
 
     this.enemies = this.physics.add.group({
       classType: Enemy,
+      maxSize: 10,
+      runChildUpdate: true,
+    });
+
+    this.zigzagEnemies = this.physics.add.group({
+      classType: ZigzagEnemy,
       maxSize: 10,
       runChildUpdate: true,
     });
@@ -146,11 +153,13 @@ export class Play extends Phaser.Scene {
   }
 
   respawnEnemy() {
-    const enemy = this.enemies.get();
+    var enemyPicker = Phaser.Math.Between(0, 1);
+    const enemy =
+      enemyPicker > 0 ? this.enemies.get() : this.zigzagEnemies.get();
 
     if (enemy) {
-      const x = 750;
-      const y = Phaser.Math.Between(20, 460);
+      const x = this.scale.width + 20;
+      const y = Phaser.Math.Between(40, this.scale.height - 40);
       enemy.spawn(x, y);
     }
   }
@@ -173,6 +182,7 @@ export class Play extends Phaser.Scene {
 
   playerHit(player, enemy) {
     player.disableMe();
+
     this.scene.restart();
   }
 }

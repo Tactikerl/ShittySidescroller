@@ -20,7 +20,7 @@ var config = {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.NO_CENTER,
   },
-  pixelArt: true,
+
   render: {
     antialias: false,
     pixelArt: true,

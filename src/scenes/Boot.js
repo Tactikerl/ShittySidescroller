@@ -8,9 +8,16 @@ export class Boot extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("retroFont", "assets/numbers.png");
+    this.load.image("retroFont", "assets/alphanumerical.png");
     this.load.image("bullet", " assets/bullet.png");
-    this.load.image("enemy", "assets/enemy.png");
+    this.load.spritesheet("enemy", "assets/enemy.png", {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+    this.load.spritesheet("zigzagEnemy", "assets/zigzagEnemy.png", {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
     this.load.image("collectible", "assets/collectible.png");
     this.load.spritesheet("background", "assets/background.png", {
       frameWidth: 128,
