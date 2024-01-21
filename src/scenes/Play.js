@@ -16,18 +16,6 @@ export class Play extends Phaser.Scene {
     //Adding sprites, sounds, etc...
     this.createBackground();
 
-    this.enemies = this.physics.add.group({
-      classType: Enemy,
-      maxSize: 10,
-      runChildUpdate: true,
-    });
-
-    this.zigzagEnemies = this.physics.add.group({
-      classType: ZigzagEnemy,
-      maxSize: 10,
-      runChildUpdate: true,
-    });
-
     this.collectibles = this.physics.add.group({
       classType: Collectible,
       maxSize: 1,
@@ -57,22 +45,6 @@ export class Play extends Phaser.Scene {
     this.player = new Player(this, 100, 240, this.bullets);
 
     this.physics.add.overlap(
-      this.enemies,
-      this.bullets,
-      this.enemyHit,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.player,
-      this.enemies,
-      this.playerHit,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
       this.player,
       this.collectibles,
       this.collectCollectible,
@@ -87,6 +59,8 @@ export class Play extends Phaser.Scene {
       null,
       this
     );
+
+    this.createEnemies();
 
     this.enemyEvent = this.time.addEvent({
       delay: 1500,
@@ -140,22 +114,60 @@ export class Play extends Phaser.Scene {
       .play("backgroundAnim");
   }
 
-  enemyHit(enemy, bullet) {
-    bullet.hit();
-    enemy.disableBody(true, true);
-    this.score += 10;
-    eventsCenter.emit("update-score", this.score);
+  createEnemies() {
+    const enemyTypeList = [
+      { type: Enemy, maxSize: 10 },
+      { type: ZigzagEnemy, maxSize: 10 },
+    ];
+    this.enemyGroups = [];
+
+    for (let index = 0; index < enemyTypeList.length; index++) {
+      const enemyType = enemyTypeList[index];
+
+      const enemies = this.physics.add.group({
+        classType: enemyType.type,
+        maxSize: enemyType.maxSize,
+        runChildUpdate: true,
+      });
+      this.enemyGroups.push(enemies);
+
+      this.physics.add.overlap(
+        enemies,
+        this.bullets,
+        (enemy, bullet) => {
+          bullet.hit();
+          enemy.disableBody(true, true);
+          this.score += 10;
+          eventsCenter.emit("update-score", this.score);
+        },
+        null,
+        this
+      );
+
+      this.physics.add.overlap(
+        this.player,
+        enemies,
+        (player, enemy) => {
+          player.disableMe();
+
+          this.scene.restart();
+        },
+        null,
+        this
+      );
+    }
   }
 
   enemyBulletHit(player, enemyBullet) {
     enemyBullet.hit();
-    this.playerHit(player);
+    player.disableMe();
+
+    this.scene.restart();
   }
 
   respawnEnemy() {
     var enemyPicker = Phaser.Math.Between(0, 1);
-    const enemy =
-      enemyPicker > 0 ? this.enemies.get() : this.zigzagEnemies.get();
+    const enemy = this.enemyGroups[enemyPicker].get();
 
     if (enemy) {
       const x = this.scale.width + 20;
@@ -178,11 +190,5 @@ export class Play extends Phaser.Scene {
     collectible.collectedOrFaded();
     this.score += 25;
     eventsCenter.emit("update-score", this.score);
-  }
-
-  playerHit(player, enemy) {
-    player.disableMe();
-
-    this.scene.restart();
   }
 }
