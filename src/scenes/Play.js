@@ -150,7 +150,7 @@ export class Play extends Phaser.Scene {
         (player, enemy) => {
           player.disableMe();
 
-          this.scene.restart();
+          this.restartGame();
         },
         null,
         this
@@ -162,7 +162,7 @@ export class Play extends Phaser.Scene {
     enemyBullet.hit();
     player.disableMe();
 
-    this.scene.restart();
+    this.restartGame();
   }
 
   respawnEnemy() {
@@ -190,5 +190,12 @@ export class Play extends Phaser.Scene {
     collectible.collectedOrFaded();
     this.score += 25;
     eventsCenter.emit("update-score", this.score);
+  }
+
+  // This is the trash collection.
+  restartGame() {
+    eventsCenter.off("enemy-shoot");
+    eventsCenter.off("update-score");
+    this.scene.restart();
   }
 }

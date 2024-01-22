@@ -6,14 +6,21 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   constructor(scene, x, y, bullets) {
     super(scene, x, y, "player", 0);
+
     this.bullets = bullets;
 
     scene.add.existing(this);
+
     scene.physics.add.existing(this, false);
 
+    this.setBodySize(26, 26).setOffset(4, 4);
+    this.setCircle(12);
     this.keyboard = scene.input.keyboard.createCursorKeys();
     this.keySpace = scene.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.SPACE
+    );
+    this.keyShift = scene.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.SHIFT
     );
 
     this.setCollideWorldBounds(true);
@@ -51,6 +58,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.lastFired = time + 90;
       }
+    }
+
+    if (Phaser.Input.Keyboard.JustDown(this.keyShift)) {
+      console.log("isPressed");
     }
   }
 }

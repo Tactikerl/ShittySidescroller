@@ -20,6 +20,7 @@ export class Enemy extends Phaser.Physics.Arcade.Image {
       true, // Activate sprite
       true // Show sprite
     );
+    this.setCircle(16);
 
     this.setVelocityX(-this.speed);
 

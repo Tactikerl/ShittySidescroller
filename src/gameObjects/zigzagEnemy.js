@@ -21,6 +21,7 @@ export class ZigzagEnemy extends Phaser.Physics.Arcade.Image {
       true // Show sprite
     );
 
+    this.setCircle(16);
     this.setVelocityX(-this.speed);
 
     this.shootEvent = this.scene.time.addEvent({
