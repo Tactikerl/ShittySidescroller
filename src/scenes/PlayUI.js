@@ -47,9 +47,13 @@ export class PlayUI extends Phaser.Scene {
       if (this.scene.isPaused("Play")) {
         this.scene.resume("Play");
         this.pauseText.setVisible(false);
+        //this.sound.get("gameTheme").resume();
+        this.sound.setVolume(1);
       } else {
         this.scene.pause("Play");
         this.pauseText.setVisible(true);
+        //this.sound.get("gameTheme").pause();
+        this.sound.setVolume(0.5);
       }
     }
 

@@ -27,9 +27,16 @@ export class Boot extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     });
+
+    this.load.audio("laser", "assets/laserLarge_003.ogg");
+    this.load.audio("dash", "assets/upgrade4.ogg");
+    this.load.audio("gameTheme", "assets/8_bit_retro_funk.mp3");
   }
 
   create() {
+    this.music = this.sound.add("gameTheme", { loop: true });
+    this.music.play();
+
     this.scene.start("Play");
   }
 }
