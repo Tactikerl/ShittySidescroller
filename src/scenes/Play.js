@@ -56,7 +56,7 @@ export class Play extends Phaser.Scene {
       this.player,
       this.enemyBullets,
       this.enemyBulletHit,
-      null,
+      (player, bullet) => !player.isDashing,
       this
     );
 
@@ -98,16 +98,20 @@ export class Play extends Phaser.Scene {
       )
       .setScale(0.5, 0.5)
       .setOrigin(0, 0);
-    this.anims.create({
-      key: "backgroundAnim",
-      frames: this.anims.generateFrameNumbers("background", {
-        start: 0,
-        end: 1,
-        first: 0,
-      }),
-      frameRate: 3,
-      repeat: -1,
-    });
+
+    if (!this.anims.exists("backgroundAnim")) {
+      this.anims.create({
+        key: "backgroundAnim",
+        frames: this.anims.generateFrameNumbers("background", {
+          start: 0,
+          end: 1,
+          first: 0,
+        }),
+        frameRate: 3,
+        repeat: -1,
+      });
+    }
+
     this.backgroundAnim = this.add
       .sprite(0, 0, "background")
       .setVisible(false)
@@ -152,7 +156,7 @@ export class Play extends Phaser.Scene {
 
           this.restartGame();
         },
-        null,
+        (player, enemy) => !player.isDashing,
         this
       );
     }

@@ -3,6 +3,9 @@ import Phaser from "../lib/phaser.js";
 export class Player extends Phaser.Physics.Arcade.Sprite {
   lastFired = 0;
   speed = 150;
+  isDashing = false;
+  lastDashed = 0;
+  dashCooldown = 0;
 
   constructor(scene, x, y, bullets) {
     super(scene, x, y, "player", 0);
@@ -31,6 +34,30 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(time, delta) {
+    if (Phaser.Input.Keyboard.JustDown(this.keyShift)) {
+      if (time > this.dashCooldown) {
+        this.isDashing = true;
+        this.lastDashed = time + 200;
+        this.dashCooldown = time + 1000;
+
+        let currentVelocity = this.body.velocity;
+
+        if (currentVelocity.x === 0 && currentVelocity.y === 0) {
+          this.setVelocityX(this.speed * 4);
+        } else {
+          this.setVelocity(currentVelocity.x * 4, currentVelocity.y * 4);
+        }
+      }
+    }
+
+    if (time > this.lastDashed) {
+      this.isDashing = false;
+    }
+
+    if (this.isDashing) {
+      return;
+    }
+
     this.setVelocity(0);
     this.setFrame(0);
     if (this.keyboard.left.isDown) {
@@ -58,10 +85,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.lastFired = time + 90;
       }
-    }
-
-    if (Phaser.Input.Keyboard.JustDown(this.keyShift)) {
-      console.log("isPressed");
     }
   }
 }
