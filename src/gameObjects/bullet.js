@@ -6,7 +6,7 @@ export class Bullet extends Phaser.Physics.Arcade.Image {
 
     this.speed = 400;
 
-    this.laserSound = scene.sound.add("laser", { loop: false });
+    this.laserSound = scene.sound.get("laser");
   }
 
   fire(x, y) {

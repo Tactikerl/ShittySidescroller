@@ -6,9 +6,11 @@ export class EnemyBullet extends Phaser.Physics.Arcade.Image {
 
     this.speed = -500;
     this.setTint(0xfc7703);
+    this.enemyShoot = scene.sound.get("enemyShoot");
   }
 
   fire(x, y) {
+    this.enemyShoot.play();
     this.setPosition(x - 32, y);
 
     this.enableBody(

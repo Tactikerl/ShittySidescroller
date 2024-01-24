@@ -12,7 +12,7 @@ export class Play extends Phaser.Scene {
     super({ key: "Play" });
   }
 
-  create() {
+  create(data) {
     //Adding sprites, sounds, etc...
     this.createBackground();
 
@@ -77,7 +77,10 @@ export class Play extends Phaser.Scene {
     });
 
     this.score = 0;
-    this.scene.launch("PlayUI", { score: this.score });
+    this.scene.launch("PlayUI", {
+      score: this.score,
+      startTime: data.startTime,
+    });
   }
 
   update(time, delta) {
@@ -98,19 +101,6 @@ export class Play extends Phaser.Scene {
       )
       .setScale(0.5, 0.5)
       .setOrigin(0, 0);
-
-    if (!this.anims.exists("backgroundAnim")) {
-      this.anims.create({
-        key: "backgroundAnim",
-        frames: this.anims.generateFrameNumbers("background", {
-          start: 0,
-          end: 1,
-          first: 0,
-        }),
-        frameRate: 3,
-        repeat: -1,
-      });
-    }
 
     this.backgroundAnim = this.add
       .sprite(0, 0, "background")
@@ -200,6 +190,6 @@ export class Play extends Phaser.Scene {
   restartGame() {
     eventsCenter.off("enemy-shoot");
     eventsCenter.off("update-score");
-    this.scene.restart();
+    this.scene.restart({ startTime: 0 });
   }
 }

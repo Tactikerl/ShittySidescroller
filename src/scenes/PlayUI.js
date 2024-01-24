@@ -9,25 +9,9 @@ export class PlayUI extends Phaser.Scene {
   }
 
   create(data) {
-    var config = {
-      image: "retroFont",
-      width: 16,
-      height: 16,
-      chars: "1234567890!?ABCDEFGHIJKLMNOPQRSTUVWXYZ.,: ",
-      charsPerRow: 12,
-      spacing: { x: 0, y: 0 },
-    };
-    this.cache.bitmapFont.add(
-      "retroFont",
-      Phaser.GameObjects.RetroFont.Parse(this, config)
-    );
-
     this.scoreText = this.add.bitmapText(5, 5, "retroFont", data.score);
 
     eventsCenter.on("update-score", this.updateScore, this);
-
-    //this.children.bringToTop(this.scoreText);
-    //this.scoreText.setScrollFactor(0);
 
     this.keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
     this.pauseText = this.add
@@ -39,7 +23,8 @@ export class PlayUI extends Phaser.Scene {
       .bitmapText(this.scale.width, 5, "retroFont", "00:00:00")
       .setOrigin(1, 0);
 
-    this.gameStartTime = this.time.now;
+    this.gameStartTime = this.time.now + data.startTime;
+    console.log(this.gameStartTime);
   }
 
   update(time, delta) {
@@ -47,12 +32,12 @@ export class PlayUI extends Phaser.Scene {
       if (this.scene.isPaused("Play")) {
         this.scene.resume("Play");
         this.pauseText.setVisible(false);
-        //this.sound.get("gameTheme").resume();
+
         this.sound.setVolume(1);
       } else {
         this.scene.pause("Play");
         this.pauseText.setVisible(true);
-        //this.sound.get("gameTheme").pause();
+
         this.sound.setVolume(0.5);
       }
     }

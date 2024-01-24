@@ -9,6 +9,10 @@ export class Boot extends Phaser.Scene {
 
   preload() {
     this.load.image("retroFont", "assets/alphanumerical.png");
+    this.load.spritesheet("button", "assets/button.png", {
+      frameWidth: 48,
+      frameHeight: 16,
+    });
     this.load.image("bullet", " assets/bullet.png");
     this.load.spritesheet("enemy", "assets/enemy.png", {
       frameWidth: 32,
@@ -31,12 +35,11 @@ export class Boot extends Phaser.Scene {
     this.load.audio("laser", "assets/laserLarge_003.ogg");
     this.load.audio("dash", "assets/upgrade4.ogg");
     this.load.audio("gameTheme", "assets/8_bit_retro_funk.mp3");
+    this.load.audio("enemyShoot", "assets/error3.ogg");
+    this.load.audio("pickup", "assets/pickup4.ogg");
   }
 
   create() {
-    this.music = this.sound.add("gameTheme", { loop: true });
-    this.music.play();
-
-    this.scene.start("Play");
+    this.scene.start("Title");
   }
 }

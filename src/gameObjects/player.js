@@ -28,7 +28,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.setCollideWorldBounds(true);
 
-    this.dashSound = scene.sound.add("dash", { loop: false });
+    this.dashSound = scene.sound.get("dash");
   }
 
   disableMe() {

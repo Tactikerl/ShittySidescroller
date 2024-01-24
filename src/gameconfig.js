@@ -1,5 +1,6 @@
 import Phaser from "./lib/phaser.js";
 import { Boot } from "./scenes/Boot.js";
+import { Title } from "./scenes/Title.js";
 import { Play } from "./scenes/Play.js";
 import { PlayUI } from "./scenes/PlayUI.js";
 
@@ -7,7 +8,7 @@ var config = {
   type: Phaser.AUTO,
   width: 720,
   height: 480,
-  scene: [Boot, Play, PlayUI],
+  scene: [Boot, Title, Play, PlayUI],
   parent: "game-wrapper",
   physics: {
     default: "arcade",

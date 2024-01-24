@@ -3,6 +3,7 @@ export class Collectible extends Phaser.Physics.Arcade.Image {
   constructor(scene) {
     super(scene, 0, 0, "collectible");
     this.isFading = false;
+    this.pickupSound = scene.sound.get("pickup");
   }
 
   spawn(x, y, time) {
@@ -20,7 +21,7 @@ export class Collectible extends Phaser.Physics.Arcade.Image {
     );
   }
 
-  collectedOrFaded() {
+  collectedOrFaded(fading = false) {
     this.fadingTween && this.fadingTween.remove();
     this.setTint(Phaser.Display.Color.GetColor(255, 255, 255));
     this.disableBody(
@@ -28,6 +29,9 @@ export class Collectible extends Phaser.Physics.Arcade.Image {
       true, // Deactivate sprite (active=false)
       true // Hide sprite (visible=false)
     );
+    if (!fading) {
+      this.pickupSound.play();
+    }
   }
 
   update(time, delta) {
@@ -37,7 +41,7 @@ export class Collectible extends Phaser.Physics.Arcade.Image {
       this.triggerFade();
     }
     if (elapsedTime > 10000) {
-      this.collectedOrFaded();
+      this.collectedOrFaded(true);
     }
   }
 
