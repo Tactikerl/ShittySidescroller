@@ -10,7 +10,7 @@ I recommend checking out Thors' [website](https://www.develop.games/) for inform
 
 ### Assets the are not made by us:
 
-- "Arcade Space Shooter Game Assets" by [GrafxKid](https://grafxkid.carrd.co/)
-- "Explosion" by [Ansimuz](https://ansimuz.com/site/)
-- SFXs by [Kenney.nl](https://www.kenney.nl/)
+- "Arcade Space Shooter Game Assets" - By [GrafxKid](https://grafxkid.carrd.co/)
+- "Explosion" - By [Ansimuz](https://ansimuz.com/site/)
+- SFXs - By [Kenney.nl](https://www.kenney.nl/)
 - Royalty Free music: 8 Bit Retro Funk - By [David Renda](https://www.fesliyanstudios.com/royalty-free-music/downloads-c/8-bit-music/6)
