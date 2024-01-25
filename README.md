@@ -7,11 +7,11 @@ I recommend checking out Thors' [website](https://www.develop.games/) for inform
 - Arrow keys to move
 - Shift to dash
 - Space to shoot
-- Press P tp pause the game
+- Press P to pause the game
 
-### Assets the are not made by us:
+### Assets that are not made by us:
 
 - "Arcade Space Shooter Game Assets" - By [GrafxKid](https://grafxkid.carrd.co/)
 - "Explosion" - By [Ansimuz](https://ansimuz.com/site/)
 - SFXs - By [Kenney.nl](https://www.kenney.nl/)
-- Royalty Free music: 8 Bit Retro Funk - By [David Renda](https://www.fesliyanstudios.com/royalty-free-music/downloads-c/8-bit-music/6)
+- Royalty-Free music: 8 Bit Retro Funk - By [David Renda](https://www.fesliyanstudios.com/royalty-free-music/downloads-c/8-bit-music/6)
