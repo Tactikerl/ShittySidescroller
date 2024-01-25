@@ -2,24 +2,22 @@ import Phaser from "../lib/phaser.js";
 // import { EnemyBullet } from "./enemyBullet.js";
 import eventsCenter from "../EventsCenter.js";
 
-export class ZigzagEnemy extends Phaser.Physics.Arcade.Image {
+export class ZigzagEnemy extends Phaser.Physics.Arcade.Sprite {
+  died = false;
+
   constructor(scene) {
     super(scene, 0, 0, "zigzagEnemy");
     this.setFlipX(true);
     this.speed = 300;
+
+    this.dieSound = scene.sound.get("explosionSfx");
   }
 
   spawn(x, y) {
+    this.died = false;
     this.setPosition(x, y);
 
-    this.enableBody(
-      // Enable physics body
-      true, // Reset body and game object, at (x, y)
-      x,
-      y,
-      true, // Activate sprite
-      true // Show sprite
-    );
+    this.enableBody(true, x, y, true, true);
 
     this.setCircle(16);
     this.setVelocityX(-this.speed);
@@ -32,15 +30,33 @@ export class ZigzagEnemy extends Phaser.Physics.Arcade.Image {
     });
   }
 
+  die() {
+    this.shootEvent.remove(false);
+    this.died = true;
+    this.play("explosionAnim");
+    this.dieSound.play();
+    this.setVelocity(0);
+    this.on(
+      Phaser.Animations.Events.ANIMATION_COMPLETE,
+      function () {
+        console.log();
+        this.setTexture("zigzagEnemy");
+        this.setFrame(0);
+        this.disableBody(true, true);
+      },
+      this
+    );
+  }
+
   update(time, delta) {
+    if (this.died) {
+      return;
+    }
+
     const sinTime = Math.sin(time / 100);
     this.setVelocityY(200 * sinTime);
     if (this.x < -16) {
-      this.disableBody(
-        // Stop and disable physics body
-        true, // Deactivate sprite (active=false)
-        true // Hide sprite (visible=false)
-      );
+      this.disableBody(true, true);
     }
     this.setFrame(0);
     if (this.body.velocity.y < -50) {

@@ -9,6 +9,8 @@ export class Title extends Phaser.Scene {
 
   create() {
     this.createBackground();
+    this.add.image(this.scale.width / 2, 200, "logo");
+
     var config = {
       image: "retroFont",
       width: 16,
@@ -23,11 +25,27 @@ export class Title extends Phaser.Scene {
     );
 
     this.playButton = this.add
-      .nineslice(360, 240, "button", 0, 100, 35, 4, 4, 4, 4)
+      .nineslice(
+        this.scale.width / 2,
+        this.scale.height / 2 + 40,
+        "button",
+        0,
+        100,
+        35,
+        4,
+        4,
+        4,
+        4
+      )
       .setInteractive({ useHandCursor: true });
 
     this.buttonText = this.add
-      .bitmapText(360, 240, "retroFont", "PLAY")
+      .bitmapText(
+        this.scale.width / 2,
+        this.scale.height / 2 + 40,
+        "retroFont",
+        "PLAY"
+      )
       .setOrigin(0.5)
       .setTint(0x606061);
 
@@ -40,6 +58,7 @@ export class Title extends Phaser.Scene {
     this.music = this.sound.add("gameTheme", { loop: true });
     this.music.play();
     this.makeSFX();
+    this.makeAnims();
   }
 
   update() {
@@ -93,5 +112,20 @@ export class Title extends Phaser.Scene {
     this.sound.add("enemyShoot", { loop: false });
     this.sound.add("pickup", { loop: false });
     this.sound.add("dash", { loop: false });
+    this.sound.add("explosionSfx", { loop: false });
+  }
+
+  makeAnims() {
+    if (!this.anims.exists("explosion")) {
+      this.anims.create({
+        key: "explosionAnim",
+        frames: this.anims.generateFrameNumbers("explosion", {
+          start: 0,
+          end: 5,
+          first: 0,
+        }),
+        frameRate: 10,
+      });
+    }
   }
 }

@@ -129,8 +129,11 @@ export class Play extends Phaser.Scene {
         enemies,
         this.bullets,
         (enemy, bullet) => {
+          if (enemy.died) {
+            return;
+          }
           bullet.hit();
-          enemy.disableBody(true, true);
+          enemy.die();
           this.score += 10;
           eventsCenter.emit("update-score", this.score);
         },

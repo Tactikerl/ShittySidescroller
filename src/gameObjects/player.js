@@ -2,7 +2,7 @@ import Phaser from "../lib/phaser.js";
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   lastFired = 0;
-  speed = 150;
+  speed = 200;
   isDashing = false;
   lastDashed = 0;
   dashCooldown = 0;
