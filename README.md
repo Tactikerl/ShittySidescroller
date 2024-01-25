@@ -7,6 +7,7 @@ I recommend checking out Thors' [website](https://www.develop.games/) for inform
 - Arrow keys to move
 - Shift to dash
 - Space to shoot
+- Press P tp pause the game
 
 ### Assets the are not made by us:
 
