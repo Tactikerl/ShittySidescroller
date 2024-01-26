@@ -35,6 +35,7 @@ export class Boot extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     });
+    this.load.image("star", "assets/star.png");
     this.load.image("logo", " assets/Logo.png");
 
     this.load.audio("laser", "assets/laserLarge_003.ogg");

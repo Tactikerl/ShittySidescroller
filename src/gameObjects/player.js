@@ -3,6 +3,7 @@ import Phaser from "../lib/phaser.js";
 export class Player extends Phaser.Physics.Arcade.Sprite {
   lastFired = 0;
   speed = 200;
+
   isDashing = false;
   lastDashed = 0;
   dashCooldown = 0;
@@ -11,6 +12,17 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, "player", 0);
 
     this.bullets = bullets;
+
+    this.particleHolder = scene.add.image(-100, -100, "star");
+
+    this.particles = scene.add.particles(0, 0, "star", {
+      speed: 100,
+      lifespan: 500,
+      scale: { start: 1, end: 0 },
+      blendMode: "ADD",
+    });
+
+    this.particles.startFollow(this);
 
     scene.add.existing(this);
 
@@ -36,6 +48,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(time, delta) {
+    if (this.body.velocity.x == 0 && this.body.velocity.y == 0) {
+      this.particles.startFollow(this.particleHolder);
+    } else {
+      this.particles.startFollow(this);
+    }
+
     if (Phaser.Input.Keyboard.JustDown(this.keyShift)) {
       if (time > this.dashCooldown) {
         this.isDashing = true;
