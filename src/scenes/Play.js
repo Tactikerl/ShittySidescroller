@@ -168,7 +168,10 @@ export class Play extends Phaser.Scene {
 
     if (enemy) {
       const x = this.scale.width + 20;
-      const y = Phaser.Math.Between(40, this.scale.height - 40);
+      const spawnPoints = [...Array(5).keys()].map(
+        (x, i) => ((this.scale.height - 80) / 5) * (i + 1)
+      );
+      const y = Phaser.Utils.Array.GetRandom(spawnPoints);
       enemy.spawn(x, y);
     }
   }

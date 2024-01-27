@@ -72,7 +72,6 @@ export class Title extends Phaser.Scene {
   startGame() {
     this.playButton.setFrame(1);
     this.buttonText.setY(this.buttonText.y + 2);
-    console.log(this.time.now);
     this.scene.start("Play", { startTime: this.time.now });
   }
 

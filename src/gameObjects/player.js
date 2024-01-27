@@ -13,16 +13,23 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.bullets = bullets;
 
-    this.particleHolder = scene.add.image(-100, -100, "star");
-
-    this.particles = scene.add.particles(0, 0, "star", {
+    this.particles = scene.add.particles(-5, 0, "star", {
       speed: 100,
-      lifespan: 500,
+      frame: 0,
       scale: { start: 1, end: 0 },
+      lifespan: {
+        onEmit: () =>
+          (!this.isDashing ? this.body.speed / this.speed : 1) * 500,
+      },
+      alpha: {
+        onEmit: () => (this.body.speed / this.speed) * 500,
+      },
+      quantity: {
+        onEmit: () => (this.body.speed / this.speed) * 1,
+      },
       blendMode: "ADD",
+      follow: this,
     });
-
-    this.particles.startFollow(this);
 
     scene.add.existing(this);
 
@@ -48,12 +55,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(time, delta) {
-    if (this.body.velocity.x == 0 && this.body.velocity.y == 0) {
-      this.particles.startFollow(this.particleHolder);
-    } else {
-      this.particles.startFollow(this);
-    }
-
     if (Phaser.Input.Keyboard.JustDown(this.keyShift)) {
       if (time > this.dashCooldown) {
         this.isDashing = true;

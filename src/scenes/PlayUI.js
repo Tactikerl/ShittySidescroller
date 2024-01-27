@@ -24,7 +24,6 @@ export class PlayUI extends Phaser.Scene {
       .setOrigin(1, 0);
 
     this.gameStartTime = this.time.now + data.startTime;
-    console.log(this.gameStartTime);
   }
 
   update(time, delta) {

@@ -27,7 +27,7 @@ export class Boot extends Phaser.Scene {
       frameWidth: 128,
       frameHeight: 128,
     });
-    this.load.spritesheet("player", "assets/PlayerPlaceholderSpritesheet.png", {
+    this.load.spritesheet("player", "assets/PlayerPlaceholder2.png", {
       frameWidth: 32,
       frameHeight: 32,
     });
