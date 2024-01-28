@@ -1,4 +1,5 @@
 import Phaser from "../lib/phaser.js";
+import eventsCenter from "../EventsCenter.js";
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   lastFired = 0;
@@ -70,6 +71,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         this.dashSound.play();
+        eventsCenter.emit("player-dashing", {
+          dashingTime: 200,
+          cooldownTime: 1000,
+        });
       }
     }
 

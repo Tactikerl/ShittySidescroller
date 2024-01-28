@@ -1,8 +1,8 @@
 import Phaser from "../lib/phaser.js";
 
-export class Bullet extends Phaser.Physics.Arcade.Image {
+export class Bullet extends Phaser.Physics.Arcade.Sprite {
   constructor(scene) {
-    super(scene, 0, 0, "bullet");
+    super(scene, 0, 0, "star", 0);
 
     this.speed = 400;
 
@@ -11,6 +11,7 @@ export class Bullet extends Phaser.Physics.Arcade.Image {
 
   fire(x, y) {
     this.laserSound.play();
+    this.play("rollingStar");
 
     this.setPosition(x + 32, y);
 

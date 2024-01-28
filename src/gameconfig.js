@@ -3,17 +3,19 @@ import { Boot } from "./scenes/Boot.js";
 import { Title } from "./scenes/Title.js";
 import { Play } from "./scenes/Play.js";
 import { PlayUI } from "./scenes/PlayUI.js";
+import { Preloader } from "./scenes/Preloader.js";
 
 var config = {
   type: Phaser.AUTO,
   width: 720,
   height: 480,
-  scene: [Boot, Title, Play, PlayUI],
+  scene: [Boot, Preloader, Title, Play, PlayUI],
+  backgroundColor: 0x000010,
   parent: "game-wrapper",
   physics: {
     default: "arcade",
     arcade: {
-      debug: false,
+      debug: true,
       gravity: { y: 0 },
     },
   },

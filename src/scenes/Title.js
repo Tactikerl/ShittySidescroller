@@ -55,10 +55,20 @@ export class Title extends Phaser.Scene {
 
     this.playButton.on("pointerup", this.startGame, this);
 
+    this.tutorialText = this.add
+      .bitmapText(
+        this.scale.width / 2,
+        this.scale.height / 2 + 120,
+        "retroFont",
+        "USE ARROW KEYS TO MOVE\nSPACEBAR TO SHOOT\nLEFT SHIFT TO DASH\nP TO PAUSE"
+      )
+      .setOrigin(0.5);
+
     this.music = this.sound.add("gameTheme", { loop: true });
     this.music.play();
     this.makeSFX();
     this.makeAnims();
+    this.cameras.main.fadeIn(250, 0, 0, 16);
   }
 
   update() {
@@ -126,5 +136,15 @@ export class Title extends Phaser.Scene {
         frameRate: 10,
       });
     }
+    this.anims.create({
+      key: "rollingStar",
+      frames: this.anims.generateFrameNumbers("star", {
+        start: 0,
+        end: 3,
+        first: 0,
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
   }
 }
