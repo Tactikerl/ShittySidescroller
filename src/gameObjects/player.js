@@ -104,6 +104,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.setVelocityY(this.speed);
       this.setFrame(3);
     }
+    if (this.body.velocity.x != 0 && this.body.velocity.y != 0) {
+      this.body.velocity.normalize().scale(this.speed);
+    }
 
     if (this.keySpace.isDown && time > this.lastFired) {
       const bullet = this.bullets.get();

@@ -2,7 +2,7 @@ import Phaser from "../lib/phaser.js";
 
 export class Bullet extends Phaser.Physics.Arcade.Sprite {
   constructor(scene) {
-    super(scene, 0, 0, "star", 0);
+    super(scene, 0, 0, "bigStar", 0);
 
     this.speed = 400;
 
@@ -11,37 +11,21 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
 
   fire(x, y) {
     this.laserSound.play();
-    this.play("rollingStar");
+    this.play("rollingBigStar");
 
-    this.setPosition(x + 32, y);
+    this.enableBody(true, x, y, true, true);
 
-    this.enableBody(
-      // Enable physics body
-      true, // Reset body and game object, at (x, y)
-      x,
-      y,
-      true, // Activate sprite
-      true // Show sprite
-    );
-
+    this.setPosition(x + 16, y);
     this.setVelocityX(this.speed);
   }
 
   hit() {
-    this.disableBody(
-      // Stop and disable physics body
-      true, // Deactivate sprite (active=false)
-      true // Hide sprite (visible=false)
-    );
+    this.disableBody(true, true);
   }
 
   update(time, delta) {
     if (this.x > 720) {
-      this.disableBody(
-        // Stop and disable physics body
-        true, // Deactivate sprite (active=false)
-        true // Hide sprite (visible=false)
-      );
+      this.disableBody(true, true);
     }
   }
 }

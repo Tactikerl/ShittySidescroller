@@ -57,6 +57,10 @@ export class Preloader extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     });
+    this.load.spritesheet("lustyEnemy", "assets/lustyEnemy.png", {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
     this.load.image("collectible", "assets/collectible.png");
     this.load.spritesheet("background", "assets/background.png", {
       frameWidth: 128,
@@ -73,6 +77,10 @@ export class Preloader extends Phaser.Scene {
     this.load.spritesheet("star", "assets/star.png", {
       frameWidth: 9,
       frameHeight: 9,
+    });
+    this.load.spritesheet("bigStar", "assets/bigStar.png", {
+      frameWidth: 16,
+      frameHeight: 16,
     });
 
     this.load.image("logo", " assets/Logo.png");

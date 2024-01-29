@@ -135,16 +135,26 @@ export class Title extends Phaser.Scene {
         }),
         frameRate: 10,
       });
+      this.anims.create({
+        key: "rollingStar",
+        frames: this.anims.generateFrameNumbers("star", {
+          start: 0,
+          end: 3,
+          first: 0,
+        }),
+        frameRate: 10,
+        repeat: -1,
+      });
+      this.anims.create({
+        key: "rollingBigStar",
+        frames: this.anims.generateFrameNumbers("bigStar", {
+          start: 0,
+          end: 3,
+          first: 0,
+        }),
+        frameRate: 15,
+        repeat: -1,
+      });
     }
-    this.anims.create({
-      key: "rollingStar",
-      frames: this.anims.generateFrameNumbers("star", {
-        start: 0,
-        end: 3,
-        first: 0,
-      }),
-      frameRate: 10,
-      repeat: -1,
-    });
   }
 }

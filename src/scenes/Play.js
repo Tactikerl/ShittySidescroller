@@ -3,6 +3,7 @@ import { Player } from "../gameObjects/player.js";
 import { Bullet } from "../gameObjects/bullet.js";
 import { Enemy } from "../gameObjects/enemy.js";
 import { ZigzagEnemy } from "../gameObjects/zigzagEnemy.js";
+import { LustyEnemy } from "../gameObjects/lustyEnemy.js";
 import { Collectible } from "../gameObjects/collectible.js";
 import { EnemyBullet } from "../gameObjects/enemyBullet.js";
 import eventsCenter from "../EventsCenter.js";
@@ -112,6 +113,7 @@ export class Play extends Phaser.Scene {
     const enemyTypeList = [
       { type: Enemy, maxSize: 10 },
       { type: ZigzagEnemy, maxSize: 10 },
+      { type: LustyEnemy, maxSize: 10 },
     ];
     this.enemyGroups = [];
 
@@ -163,7 +165,7 @@ export class Play extends Phaser.Scene {
   }
 
   respawnEnemy() {
-    var enemyPicker = Phaser.Math.Between(0, 1);
+    var enemyPicker = Phaser.Math.Between(0, this.enemyGroups.length - 1);
     const enemy = this.enemyGroups[enemyPicker].get();
 
     if (enemy) {
@@ -172,7 +174,7 @@ export class Play extends Phaser.Scene {
         (x, i) => ((this.scale.height - 80) / 5) * (i + 1)
       );
       const y = Phaser.Utils.Array.GetRandom(spawnPoints);
-      enemy.spawn(x, y);
+      enemy.spawn(x, y, this.player);
     }
   }
 
