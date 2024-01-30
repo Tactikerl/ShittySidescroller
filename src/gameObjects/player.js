@@ -4,7 +4,10 @@ import eventsCenter from "../EventsCenter.js";
 export class Player extends Phaser.Physics.Arcade.Sprite {
   lastFired = 0;
   speed = 200;
+  health = 3;
 
+  invisFrames = false;
+  invisFramesCooldown = 0;
   isDashing = false;
   lastDashed = 0;
   dashCooldown = 0;
@@ -52,7 +55,21 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   disableMe() {
-    this.disableBody(true, true);
+    this.health--;
+    eventsCenter.emit("playerDamage", this.health);
+
+    if (this.health == 0) {
+      this.disableBody(true, true);
+    }
+    this.invisFrames = true;
+    this.scene.time.delayedCall(
+      500,
+      () => {
+        this.invisFrames = false;
+      },
+      [],
+      this
+    );
   }
 
   update(time, delta) {

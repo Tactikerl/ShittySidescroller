@@ -82,6 +82,10 @@ export class Preloader extends Phaser.Scene {
       frameWidth: 16,
       frameHeight: 16,
     });
+    this.load.spritesheet("heart", "assets/HP.png", {
+      frameWidth: 16,
+      frameHeight: 16,
+    });
 
     this.load.image("logo", " assets/Logo.png");
 

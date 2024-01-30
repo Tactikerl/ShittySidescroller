@@ -27,6 +27,8 @@ export class PlayUI extends Phaser.Scene {
 
     this.gameStartTime = this.time.now + data.startTime;
 
+    this.healthBar();
+
     this.add
       .nineslice(
         this.scale.width / 2 - this.barContainer / 2,
@@ -81,6 +83,24 @@ export class PlayUI extends Phaser.Scene {
 
   updateScore(score) {
     this.scoreText.text = score;
+  }
+
+  healthBar() {
+    const heartPoints = 3;
+    this.HP = [];
+    for (let index = 0; index < heartPoints; index++) {
+      const heart = this.add.image(
+        this.scale.width / 2 - 16 + index * 16,
+        30,
+        "heart",
+        0
+      );
+      this.HP.push(heart);
+    }
+
+    eventsCenter.on("playerDamage", (health) => {
+      this.HP[health].setFrame(2);
+    });
   }
 
   dashUpdate(dashTimes) {

@@ -57,7 +57,7 @@ export class Play extends Phaser.Scene {
       this.player,
       this.enemyBullets,
       this.enemyBulletHit,
-      (player, bullet) => !player.isDashing,
+      (player, bullet) => !(player.isDashing || player.invisFrames),
       this
     );
 
@@ -149,9 +149,11 @@ export class Play extends Phaser.Scene {
         (player, enemy) => {
           player.disableMe();
 
-          this.restartGame();
+          if (player.health == 0) {
+            this.restartGame();
+          }
         },
-        (player, enemy) => !player.isDashing,
+        (player, enemy) => !(player.isDashing || player.invisFrames),
         this
       );
     }
@@ -159,9 +161,12 @@ export class Play extends Phaser.Scene {
 
   enemyBulletHit(player, enemyBullet) {
     enemyBullet.hit();
+
     player.disableMe();
 
-    this.restartGame();
+    if (player.health == 0) {
+      this.restartGame();
+    }
   }
 
   respawnEnemy() {
