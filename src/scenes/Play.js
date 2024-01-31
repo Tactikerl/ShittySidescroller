@@ -43,7 +43,7 @@ export class Play extends Phaser.Scene {
       }
     });
 
-    this.player = new Player(this, 100, 240, this.bullets);
+    this.player = new Player(this, 100, this.scale.height / 2, this.bullets);
 
     this.physics.add.overlap(
       this.player,
@@ -113,11 +113,11 @@ export class Play extends Phaser.Scene {
 
   createControls() {
     const joyStick = this.plugins.get("rexvirtualjoystickplugin").add(this, {
-      x: 50,
-      y: this.scale.height - 50,
-      radius: 50,
-      base: this.add.circle(0, 0, 50, 0x888888),
-      thumb: this.add.circle(0, 0, 25, 0xcccccc),
+      x: 75,
+      y: this.scale.height - 75,
+      radius: 75,
+      base: this.add.circle(0, 0, 75, 0x888888),
+      thumb: this.add.circle(0, 0, 35, 0xcccccc),
       dir: "8dir",
     });
 
@@ -129,8 +129,22 @@ export class Play extends Phaser.Scene {
       Phaser.Input.Keyboard.KeyCodes.SHIFT
     );
 
+    const mobileButtons = { dButton: false, sButton: false };
+    const dButton = this.add
+      .image(this.scale.width - 64 / 2, this.scale.height - 64 * 1.5, "dButton")
+      .setInteractive()
+      .on("pointerdown", () => (mobileButtons.dButton = true))
+      .on("pointerup", () => (mobileButtons.dButton = false));
+
+    const sButton = this.add
+      .image(this.scale.width - 64 * 2, this.scale.height - 64 / 2, "sButton")
+      .setInteractive()
+      .on("pointerdown", () => (mobileButtons.sButton = true))
+      .on("pointerup", () => (mobileButtons.sButton = false));
+
     this.controls = {
       joyStick,
+      mobileButtons,
       keyboard,
       keySpace,
       keyShift,

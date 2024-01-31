@@ -8,7 +8,7 @@ import { Preloader } from "./scenes/Preloader.js";
 var config = {
   type: Phaser.AUTO,
   width: 720,
-  height: 480,
+  height: 400,
   scene: [Boot, Preloader, Title, Play, PlayUI],
   backgroundColor: 0x000010,
   parent: "game-wrapper",

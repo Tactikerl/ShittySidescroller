@@ -88,6 +88,8 @@ export class Preloader extends Phaser.Scene {
     });
 
     this.load.image("logo", " assets/Logo.png");
+    this.load.image("dButton", " assets/dButton.png");
+    this.load.image("sButton", " assets/sButton.png");
 
     const url =
       "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js";

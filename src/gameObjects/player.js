@@ -66,10 +66,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(time, delta, controls) {
-    const { joyStick, keyboard, keySpace, keyShift } = controls;
+    const { joyStick, mobileButtons, keyboard, keySpace, keyShift } = controls;
     var cursorKeys = joyStick.createCursorKeys();
 
-    if (Phaser.Input.Keyboard.JustDown(keyShift)) {
+    if (Phaser.Input.Keyboard.JustDown(keyShift) || mobileButtons.dButton) {
       if (time > this.dashCooldown) {
         this.isDashing = true;
         this.lastDashed = time + 200;
@@ -121,7 +121,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.body.velocity.normalize().scale(this.speed);
     }
 
-    if (keySpace.isDown && time > this.lastFired) {
+    if ((keySpace.isDown || mobileButtons.sButton) && time > this.lastFired) {
       const bullet = this.bullets.get();
 
       if (bullet) {

@@ -9,7 +9,7 @@ export class Title extends Phaser.Scene {
 
   create() {
     this.createBackground();
-    this.add.image(this.scale.width / 2, 200, "logo");
+    this.add.image(this.scale.width / 2, this.scale.height / 2 - 40, "logo");
 
     var config = {
       image: "retroFont",
