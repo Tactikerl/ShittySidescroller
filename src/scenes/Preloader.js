@@ -89,6 +89,10 @@ export class Preloader extends Phaser.Scene {
 
     this.load.image("logo", " assets/Logo.png");
 
+    const url =
+      "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js";
+    this.load.plugin("rexvirtualjoystickplugin", url, true);
+
     this.load.audio("laser", "assets/laserLarge_003.ogg");
     this.load.audio("dash", "assets/upgrade4.ogg");
     this.load.audio("gameTheme", "assets/8_bit_retro_funk.mp3");

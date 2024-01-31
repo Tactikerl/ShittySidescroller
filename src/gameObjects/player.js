@@ -41,13 +41,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.setBodySize(26, 26).setOffset(4, 4);
     this.setCircle(12);
-    this.keyboard = scene.input.keyboard.createCursorKeys();
-    this.keySpace = scene.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.SPACE
-    );
-    this.keyShift = scene.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.SHIFT
-    );
 
     this.setCollideWorldBounds(true);
 
@@ -72,8 +65,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     );
   }
 
-  update(time, delta) {
-    if (Phaser.Input.Keyboard.JustDown(this.keyShift)) {
+  update(time, delta, controls) {
+    const { joyStick, keyboard, keySpace, keyShift } = controls;
+    var cursorKeys = joyStick.createCursorKeys();
+
+    if (Phaser.Input.Keyboard.JustDown(keyShift)) {
       if (time > this.dashCooldown) {
         this.isDashing = true;
         this.lastDashed = time + 200;
@@ -105,19 +101,19 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.setVelocity(0);
     this.setFrame(0);
-    if (this.keyboard.left.isDown) {
+    if (keyboard.left.isDown || cursorKeys.left.isDown) {
       this.setVelocityX(-this.speed);
       this.setFrame(1);
     }
-    if (this.keyboard.right.isDown) {
+    if (keyboard.right.isDown || cursorKeys.right.isDown) {
       this.setVelocityX(this.speed);
       this.setFrame(2);
     }
-    if (this.keyboard.up.isDown) {
+    if (keyboard.up.isDown || cursorKeys.up.isDown) {
       this.setVelocityY(-this.speed);
       this.setFrame(5);
     }
-    if (this.keyboard.down.isDown) {
+    if (keyboard.down.isDown || cursorKeys.down.isDown) {
       this.setVelocityY(this.speed);
       this.setFrame(3);
     }
@@ -125,7 +121,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.body.velocity.normalize().scale(this.speed);
     }
 
-    if (this.keySpace.isDown && time > this.lastFired) {
+    if (keySpace.isDown && time > this.lastFired) {
       const bullet = this.bullets.get();
 
       if (bullet) {

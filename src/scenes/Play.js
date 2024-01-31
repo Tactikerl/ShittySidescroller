@@ -82,10 +82,12 @@ export class Play extends Phaser.Scene {
       score: this.score,
       startTime: data.startTime,
     });
+
+    this.createControls();
   }
 
   update(time, delta) {
-    this.player.update(time, delta);
+    this.player.update(time, delta, this.controls);
 
     this.background.setFrame(this.backgroundAnim.frame.name);
     this.background.tilePositionX += 3;
@@ -107,6 +109,32 @@ export class Play extends Phaser.Scene {
       .sprite(0, 0, "background")
       .setVisible(false)
       .play("backgroundAnim");
+  }
+
+  createControls() {
+    const joyStick = this.plugins.get("rexvirtualjoystickplugin").add(this, {
+      x: 50,
+      y: this.scale.height - 50,
+      radius: 50,
+      base: this.add.circle(0, 0, 50, 0x888888),
+      thumb: this.add.circle(0, 0, 25, 0xcccccc),
+      dir: "8dir",
+    });
+
+    const keyboard = this.input.keyboard.createCursorKeys();
+    const keySpace = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.SPACE
+    );
+    const keyShift = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.SHIFT
+    );
+
+    this.controls = {
+      joyStick,
+      keyboard,
+      keySpace,
+      keyShift,
+    };
   }
 
   createEnemies() {
