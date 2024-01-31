@@ -23,7 +23,7 @@ var config = {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.NO_CENTER,
   },
-
+  input: { activePointers: 4 },
   render: {
     antialias: false,
     pixelArt: true,
