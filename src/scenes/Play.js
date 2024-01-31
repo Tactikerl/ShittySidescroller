@@ -112,11 +112,12 @@ export class Play extends Phaser.Scene {
   }
 
   createControls() {
+    const stickSize = 50;
     const joyStick = this.plugins.get("rexvirtualjoystickplugin").add(this, {
-      x: 75,
-      y: this.scale.height - 75,
-      radius: 75,
-      base: this.add.circle(0, 0, 75, 0x888888),
+      x: stickSize,
+      y: this.scale.height - stickSize,
+      radius: stickSize,
+      base: this.add.circle(0, 0, stickSize, 0x888888),
       thumb: this.add.circle(0, 0, 35, 0xcccccc),
       dir: "8dir",
     });
