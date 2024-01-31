@@ -95,12 +95,12 @@ export class Preloader extends Phaser.Scene {
       "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js";
     this.load.plugin("rexvirtualjoystickplugin", url, true);
 
-    this.load.audio("laser", "assets/laserLarge_003.ogg");
-    this.load.audio("dash", "assets/upgrade4.ogg");
+    this.load.audio("laser", "assets/laserLarge_003.mp3");
+    this.load.audio("dash", "assets/upgrade4.mp3");
     this.load.audio("gameTheme", "assets/8_bit_retro_funk.mp3");
-    this.load.audio("enemyShoot", "assets/error3.ogg");
-    this.load.audio("pickup", "assets/pickup4.ogg");
-    this.load.audio("explosionSfx", "assets/explosion2.ogg");
+    this.load.audio("enemyShoot", "assets/error3.mp3");
+    this.load.audio("pickup", "assets/pickup4.mp3");
+    this.load.audio("explosionSfx", "assets/explosion2.mp3");
   }
 
   create() {
