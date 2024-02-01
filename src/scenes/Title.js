@@ -82,6 +82,14 @@ export class Title extends Phaser.Scene {
   startGame() {
     this.playButton.setFrame(1);
     this.buttonText.setY(this.buttonText.y + 2);
+    this.sound.unlock();
+    if (!this.sound.locked) {
+      this.music.play();
+    } else {
+      this.sound.once(Phaser.Sound.Events.UNLOCKED, () => {
+        this.music.play();
+      });
+    }
     this.scene.start("Play", { startTime: this.time.now });
   }
 
