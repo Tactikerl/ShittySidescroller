@@ -23,13 +23,17 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       scale: { start: 1, end: 0 },
       lifespan: {
         onEmit: () =>
-          (!this.isDashing ? this.body.speed / this.speed : 1) * 500,
+          (!this.isDashing
+            ? (this.body.speed || this.body.velocity.length()) / this.speed
+            : 1) * 500,
       },
       alpha: {
-        onEmit: () => (this.body.speed / this.speed) * 500,
+        onEmit: () =>
+          ((this.body.speed || this.body.velocity.length()) / this.speed) * 500,
       },
       quantity: {
-        onEmit: () => (this.body.speed / this.speed) * 1,
+        onEmit: () =>
+          ((this.body.speed || this.body.velocity.length()) / this.speed) * 1,
       },
       blendMode: "ADD",
       follow: this,
@@ -101,22 +105,44 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.setVelocity(0);
     this.setFrame(0);
-    if (keyboard.left.isDown || cursorKeys.left.isDown) {
+    if (keyboard.left.isDown) {
       this.setVelocityX(-this.speed);
       this.setFrame(1);
     }
-    if (keyboard.right.isDown || cursorKeys.right.isDown) {
+    if (keyboard.right.isDown) {
       this.setVelocityX(this.speed);
       this.setFrame(2);
     }
-    if (keyboard.up.isDown || cursorKeys.up.isDown) {
+    if (keyboard.up.isDown) {
       this.setVelocityY(-this.speed);
       this.setFrame(5);
     }
-    if (keyboard.down.isDown || cursorKeys.down.isDown) {
+    if (keyboard.down.isDown) {
       this.setVelocityY(this.speed);
       this.setFrame(3);
     }
+    console.log(joyStick.angle);
+    if (joyStick.force > 0) {
+      this.scene.physics.velocityFromAngle(
+        joyStick.angle,
+        this.speed,
+        this.body.velocity
+      );
+      console.log(this.body.velocity.length());
+      if (cursorKeys.left.isDown) {
+        this.setFrame(1);
+      }
+      if (cursorKeys.right.isDown) {
+        this.setFrame(2);
+      }
+      if (cursorKeys.up.isDown) {
+        this.setFrame(5);
+      }
+      if (cursorKeys.down.isDown) {
+        this.setFrame(3);
+      }
+    }
+
     if (this.body.velocity.x != 0 && this.body.velocity.y != 0) {
       this.body.velocity.normalize().scale(this.speed);
     }
