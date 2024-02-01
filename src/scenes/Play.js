@@ -63,6 +63,7 @@ export class Play extends Phaser.Scene {
 
     this.createEnemies();
 
+    this.enemyCount = 0;
     this.enemyEvent = this.time.addEvent({
       delay: 1500,
       callback: this.respawnEnemy,
@@ -218,6 +219,15 @@ export class Play extends Phaser.Scene {
   }
 
   respawnEnemy() {
+    if (this.enemyCount % 5 === 0) {
+      this.enemyEvent.reset({
+        delay: 1500 - Math.min(1200, Math.floor(this.enemyCount / 5) * 50),
+        callback: this.respawnEnemy,
+        callbackScope: this,
+        loop: true,
+      });
+    }
+
     var enemyPicker = Phaser.Math.Between(0, this.enemyGroups.length - 1);
     const enemy = this.enemyGroups[enemyPicker].get();
 
@@ -229,6 +239,8 @@ export class Play extends Phaser.Scene {
       const y = Phaser.Utils.Array.GetRandom(spawnPoints);
       enemy.spawn(x, y, this.player);
     }
+
+    this.enemyCount++;
   }
 
   spawnCollectible() {
