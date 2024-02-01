@@ -117,8 +117,8 @@ export class Play extends Phaser.Scene {
       x: stickSize + 35,
       y: this.scale.height - stickSize - 25,
       radius: stickSize - 20,
-      base: this.add.circle(0, 0, stickSize, 0x888888),
-      thumb: this.add.circle(0, 0, stickSize / 1.5, 0xcccccc),
+      base: this.add.image(0, 0, "controlBase").setAlpha(0.3),
+      thumb: this.add.image(0, 0, "controlThumb").setAlpha(0.3),
       dir: "8dir",
       forceMin: 0,
     });
@@ -134,12 +134,14 @@ export class Play extends Phaser.Scene {
     const mobileButtons = { dButton: false, sButton: false };
     const dButton = this.add
       .image(this.scale.width - 64 / 2, this.scale.height - 64 * 1.5, "dButton")
+      .setAlpha(0.5)
       .setInteractive()
       .on("pointerdown", () => (mobileButtons.dButton = true))
       .on("pointerup", () => (mobileButtons.dButton = false));
 
     const sButton = this.add
       .image(this.scale.width - 64 * 2, this.scale.height - 64 / 2, "sButton")
+      .setAlpha(0.5)
       .setInteractive()
       .on("pointerdown", () => (mobileButtons.sButton = true))
       .on("pointerup", () => (mobileButtons.sButton = false));
