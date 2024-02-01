@@ -116,10 +116,11 @@ export class Play extends Phaser.Scene {
     const joyStick = this.plugins.get("rexvirtualjoystickplugin").add(this, {
       x: stickSize + 35,
       y: this.scale.height - stickSize - 25,
-      radius: stickSize,
+      radius: stickSize - 20,
       base: this.add.circle(0, 0, stickSize, 0x888888),
       thumb: this.add.circle(0, 0, stickSize / 1.5, 0xcccccc),
       dir: "8dir",
+      forceMin: 0,
     });
 
     const keyboard = this.input.keyboard.createCursorKeys();
