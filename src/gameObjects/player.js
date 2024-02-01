@@ -67,6 +67,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       [],
       this
     );
+    this.scene.add.tween({
+      targets: this,
+      duration: 10,
+      alpha: { getStart: () => 1, getEnd: () => 0 },
+      loop: 17,
+      yoyo: true,
+    });
   }
 
   update(time, delta, controls) {
@@ -121,14 +128,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.setVelocityY(this.speed);
       this.setFrame(3);
     }
-    console.log(joyStick.angle);
+
     if (joyStick.force > 0) {
       this.scene.physics.velocityFromAngle(
         joyStick.angle,
         this.speed,
         this.body.velocity
       );
-      console.log(this.body.velocity.length());
+
       if (cursorKeys.left.isDown) {
         this.setFrame(1);
       }

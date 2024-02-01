@@ -39,7 +39,6 @@ export class ZigzagEnemy extends Phaser.Physics.Arcade.Sprite {
     this.on(
       Phaser.Animations.Events.ANIMATION_COMPLETE,
       function () {
-        console.log();
         this.setTexture("zigzagEnemy");
         this.setFrame(0);
         this.disableBody(true, true);

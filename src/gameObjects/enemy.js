@@ -39,7 +39,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.on(
       Phaser.Animations.Events.ANIMATION_COMPLETE,
       function () {
-        console.log();
         this.setTexture("enemy");
         this.setFrame(0);
         this.disableBody(true, true);

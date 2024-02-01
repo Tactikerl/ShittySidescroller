@@ -193,7 +193,9 @@ export class Play extends Phaser.Scene {
         this.player,
         enemies,
         (player, enemy) => {
-          player.disableMe();
+          if (!player.invisFrames) {
+            player.disableMe();
+          }
 
           if (player.health == 0) {
             this.restartGame();
