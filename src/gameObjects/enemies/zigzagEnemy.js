@@ -1,14 +1,14 @@
-import Phaser from "../lib/phaser.js";
+import Phaser from "../../lib/phaser.js";
 // import { EnemyBullet } from "./enemyBullet.js";
-import eventsCenter from "../EventsCenter.js";
+import eventsCenter from "../../EventsCenter.js";
 
-export class Enemy extends Phaser.Physics.Arcade.Sprite {
+export class ZigzagEnemy extends Phaser.Physics.Arcade.Sprite {
   died = false;
 
   constructor(scene) {
-    super(scene, 0, 0, "enemy", 0);
+    super(scene, 0, 0, "zigzagEnemy");
     this.setFlipX(true);
-    this.speed = 200;
+    this.speed = 300;
 
     this.dieSound = scene.sound.get("explosionSfx");
   }
@@ -19,7 +19,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     this.enableBody(true, x, y, true, true);
     this.setCircle(16);
-
     this.setVelocityX(-this.speed);
 
     this.shootEvent = this.scene.time.addEvent({
@@ -31,15 +30,19 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   die() {
+    if (this.died) {
+      return;
+    }
+
     this.shootEvent.remove(false);
     this.died = true;
     this.play("explosionAnim");
     this.dieSound.play();
     this.setVelocity(0);
-    this.on(
+    this.once(
       Phaser.Animations.Events.ANIMATION_COMPLETE,
       function () {
-        this.setTexture("enemy");
+        this.setTexture("zigzagEnemy");
         this.setFrame(0);
         this.disableBody(true, true);
       },
@@ -47,13 +50,24 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     );
   }
 
+  onImpact() {}
+
   update(time, delta) {
     if (this.died) {
       return;
     }
 
+    const sinTime = Math.sin(time / 100);
+    this.setVelocityY(200 * sinTime);
     if (this.x < -16) {
       this.disableBody(true, true);
+    }
+    this.setFrame(0);
+    if (this.body.velocity.y < -50) {
+      this.setFrame(5);
+    }
+    if (this.body.velocity.y > 50) {
+      this.setFrame(3);
     }
   }
 

@@ -1,39 +1,48 @@
-import Phaser from "../lib/phaser.js";
+import Phaser from "../../lib/phaser.js";
 // import { EnemyBullet } from "./enemyBullet.js";
-import eventsCenter from "../EventsCenter.js";
+import eventsCenter from "../../EventsCenter.js";
 
-export class LustyEnemy extends Phaser.Physics.Arcade.Sprite {
+export class Enemy extends Phaser.Physics.Arcade.Sprite {
   died = false;
 
   constructor(scene) {
-    super(scene, 0, 0, "lustyEnemy", 0);
+    super(scene, 0, 0, "enemy", 0);
     this.setFlipX(true);
-    this.speed = 210;
+    this.speed = 200;
 
     this.dieSound = scene.sound.get("explosionSfx");
   }
 
-  spawn(x, y, target) {
+  spawn(x, y) {
     this.died = false;
     this.setPosition(x, y);
 
     this.enableBody(true, x, y, true, true);
     this.setCircle(16);
-
     this.setVelocityX(-this.speed);
-    this.myBeloved = target;
+
+    this.shootEvent = this.scene.time.addEvent({
+      delay: 250,
+      callback: this.shootBullet,
+      callbackScope: this,
+      repeat: 2,
+    });
   }
 
   die() {
-    this.shootEvent && this.shootEvent.remove(false);
+    if (this.died) {
+      return;
+    }
+
+    this.shootEvent.remove(false);
     this.died = true;
     this.play("explosionAnim");
     this.dieSound.play();
     this.setVelocity(0);
-    this.on(
+    this.once(
       Phaser.Animations.Events.ANIMATION_COMPLETE,
       function () {
-        this.setTexture("lustyEnemy");
+        this.setTexture("enemy");
         this.setFrame(0);
         this.disableBody(true, true);
       },
@@ -41,31 +50,11 @@ export class LustyEnemy extends Phaser.Physics.Arcade.Sprite {
     );
   }
 
+  onImpact() {}
+
   update(time, delta) {
     if (this.died) {
       return;
-    }
-
-    const myBelovedAngle = Phaser.Math.Angle.BetweenPoints(
-      this,
-      this.myBeloved
-    );
-    this.body.velocity.setAngle(myBelovedAngle);
-
-    var deg = Phaser.Math.RadToDeg(myBelovedAngle);
-
-    this.setFrame(0);
-    if (this.body.velocity.y < -50) {
-      this.setFrame(5);
-    }
-    if (this.body.velocity.y > 50) {
-      this.setFrame(3);
-    }
-
-    if ((deg > 0 && deg < 90) || (deg < 0 && deg > -90)) {
-      this.setFlipX(false);
-    } else {
-      this.setFlipX(true);
     }
 
     if (this.x < -16) {

@@ -11,24 +11,13 @@ export class Collectible extends Phaser.Physics.Arcade.Image {
     this.spawnTime = time;
     this.isFading = false;
 
-    this.enableBody(
-      // Enable physics body
-      true, // Reset body and game object, at (x, y)
-      x,
-      y,
-      true, // Activate sprite
-      true // Show sprite
-    );
+    this.enableBody(true, x, y, true, true);
   }
 
   collectedOrFaded(fading = false) {
     this.fadingTween && this.fadingTween.remove();
     this.setTint(Phaser.Display.Color.GetColor(255, 255, 255));
-    this.disableBody(
-      // Stop and disable physics body
-      true, // Deactivate sprite (active=false)
-      true // Hide sprite (visible=false)
-    );
+    this.disableBody(true, true);
     if (!fading) {
       this.pickupSound.play();
     }

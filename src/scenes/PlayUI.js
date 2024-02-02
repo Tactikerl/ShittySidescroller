@@ -2,7 +2,6 @@ import Phaser from "../lib/phaser.js";
 import eventsCenter from "../EventsCenter.js";
 
 export class PlayUI extends Phaser.Scene {
-  barContainer = 130;
   constructor() {
     super({
       key: "PlayUI",
@@ -11,9 +10,11 @@ export class PlayUI extends Phaser.Scene {
 
   create(data) {
     this.scoreText = this.add.bitmapText(5, 5, "retroFont", data.score);
-
-    eventsCenter.on("update-score", this.updateScore, this);
-    eventsCenter.on("player-dashing", this.dashUpdate, this);
+    eventsCenter.on(
+      "update-score",
+      (score) => (this.scoreText.text = score),
+      this
+    );
 
     this.keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
     this.pauseText = this.add
@@ -28,6 +29,52 @@ export class PlayUI extends Phaser.Scene {
     this.gameStartTime = this.time.now + data.startTime;
 
     this.healthBar();
+
+    this.createStaminaBar();
+  }
+
+  update(time, delta) {
+    if (Phaser.Input.Keyboard.JustDown(this.keyP)) {
+      if (this.scene.isPaused("Play")) {
+        this.scene.resume("Play");
+        this.pauseText.setVisible(false);
+
+        this.sound.setVolume(1);
+      } else {
+        this.scene.pause("Play");
+        this.pauseText.setVisible(true);
+
+        this.sound.setVolume(0.5);
+      }
+    }
+
+    const playSeconds = Math.round((time - this.gameStartTime) * 0.001);
+    this.playTime.text = new Date(playSeconds * 1000)
+      .toISOString()
+      .slice(11, 19);
+  }
+
+  healthBar() {
+    const heartPoints = 3;
+    this.HP = [];
+
+    for (let index = 0; index < heartPoints; index++) {
+      const heart = this.add.image(
+        this.scale.width / 2 - 18 + index * 18,
+        30,
+        "heart",
+        0
+      );
+      this.HP.push(heart);
+    }
+
+    eventsCenter.on("playerDamage", (health) => {
+      this.HP[health].setFrame(2);
+    });
+  }
+
+  createStaminaBar() {
+    this.barContainer = 130;
 
     this.add
       .nineslice(
@@ -58,49 +105,8 @@ export class PlayUI extends Phaser.Scene {
         3
       )
       .setOrigin(0, 0.5);
-  }
 
-  update(time, delta) {
-    if (Phaser.Input.Keyboard.JustDown(this.keyP)) {
-      if (this.scene.isPaused("Play")) {
-        this.scene.resume("Play");
-        this.pauseText.setVisible(false);
-
-        this.sound.setVolume(1);
-      } else {
-        this.scene.pause("Play");
-        this.pauseText.setVisible(true);
-
-        this.sound.setVolume(0.5);
-      }
-    }
-
-    const playSeconds = Math.round((time - this.gameStartTime) * 0.001);
-    this.playTime.text = new Date(playSeconds * 1000)
-      .toISOString()
-      .slice(11, 19);
-  }
-
-  updateScore(score) {
-    this.scoreText.text = score;
-  }
-
-  healthBar() {
-    const heartPoints = 3;
-    this.HP = [];
-    for (let index = 0; index < heartPoints; index++) {
-      const heart = this.add.image(
-        this.scale.width / 2 - 16 + index * 16,
-        30,
-        "heart",
-        0
-      );
-      this.HP.push(heart);
-    }
-
-    eventsCenter.on("playerDamage", (health) => {
-      this.HP[health].setFrame(2);
-    });
+    eventsCenter.on("player-dashing", this.dashUpdate, this);
   }
 
   dashUpdate(dashTimes) {

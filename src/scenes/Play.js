@@ -1,9 +1,7 @@
 import Phaser from "../lib/phaser.js";
 import { Player } from "../gameObjects/player.js";
 import { Bullet } from "../gameObjects/bullet.js";
-import { Enemy } from "../gameObjects/enemy.js";
-import { ZigzagEnemy } from "../gameObjects/zigzagEnemy.js";
-import { LustyEnemy } from "../gameObjects/lustyEnemy.js";
+import { enemyTypeList } from "../gameObjects/enemies/enemies.js";
 import { Collectible } from "../gameObjects/collectible.js";
 import { EnemyBullet } from "../gameObjects/enemyBullet.js";
 import eventsCenter from "../EventsCenter.js";
@@ -64,12 +62,7 @@ export class Play extends Phaser.Scene {
     this.createEnemies();
 
     this.enemyCount = 0;
-    this.enemyEvent = this.time.addEvent({
-      delay: 1500,
-      callback: this.respawnEnemy,
-      callbackScope: this,
-      loop: true,
-    });
+    this.enemyEvent = this.time.addEvent(this.createEnemySpawnTimer(1500));
 
     this.collectibleEvent = this.time.addEvent({
       delay: 30000,
@@ -133,14 +126,13 @@ export class Play extends Phaser.Scene {
     );
 
     const mobileButtons = { dButton: false, sButton: false };
-    const dButton = this.add
+    this.add
       .image(this.scale.width - 64 / 2, this.scale.height - 64 * 1.5, "dButton")
       .setAlpha(0.5)
       .setInteractive()
       .on("pointerdown", () => (mobileButtons.dButton = true))
       .on("pointerup", () => (mobileButtons.dButton = false));
-
-    const sButton = this.add
+    this.add
       .image(this.scale.width - 64 * 2, this.scale.height - 64 / 2, "sButton")
       .setAlpha(0.5)
       .setInteractive()
@@ -157,11 +149,6 @@ export class Play extends Phaser.Scene {
   }
 
   createEnemies() {
-    const enemyTypeList = [
-      { type: Enemy, maxSize: 10 },
-      { type: ZigzagEnemy, maxSize: 10 },
-      { type: LustyEnemy, maxSize: 10 },
-    ];
     this.enemyGroups = [];
 
     for (let index = 0; index < enemyTypeList.length; index++) {
@@ -181,8 +168,10 @@ export class Play extends Phaser.Scene {
           if (enemy.died) {
             return;
           }
+
           bullet.hit();
           enemy.die();
+
           this.score += 10;
           eventsCenter.emit("update-score", this.score);
         },
@@ -194,6 +183,10 @@ export class Play extends Phaser.Scene {
         this.player,
         enemies,
         (player, enemy) => {
+          if (enemy.died) {
+            return;
+          }
+
           if (!player.invisFrames) {
             player.disableMe();
           }
@@ -201,6 +194,8 @@ export class Play extends Phaser.Scene {
           if (player.health == 0) {
             this.restartGame();
           }
+
+          enemy.onImpact();
         },
         (player, enemy) => !(player.isDashing || player.invisFrames),
         this
@@ -218,14 +213,19 @@ export class Play extends Phaser.Scene {
     }
   }
 
+  createEnemySpawnTimer(delay) {
+    return {
+      delay: delay,
+      callback: this.respawnEnemy,
+      callbackScope: this,
+      loop: true,
+    };
+  }
+
   respawnEnemy() {
     if (this.enemyCount % 5 === 0) {
-      this.enemyEvent.reset({
-        delay: 1500 - Math.min(1200, Math.floor(this.enemyCount / 5) * 50),
-        callback: this.respawnEnemy,
-        callbackScope: this,
-        loop: true,
-      });
+      const delay = 1500 - Math.min(1200, Math.floor(this.enemyCount / 5) * 50);
+      this.enemyEvent.reset(this.createEnemySpawnTimer(delay));
     }
 
     var enemyPicker = Phaser.Math.Between(0, this.enemyGroups.length - 1);

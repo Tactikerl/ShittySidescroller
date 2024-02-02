@@ -8,40 +8,7 @@ export class Preloader extends Phaser.Scene {
   }
 
   preload() {
-    const barContainer = 260;
-    this.add
-      .nineslice(
-        this.scale.width / 2 - barContainer / 2,
-        this.scale.height / 2,
-        "loadingBar",
-        0,
-        barContainer,
-        24,
-        3,
-        3,
-        3,
-        3
-      )
-      .setOrigin(0, 0.5);
-
-    let fill = this.add
-      .nineslice(
-        this.scale.width / 2 - barContainer / 2,
-        this.scale.height / 2,
-        "loadingBar",
-        1,
-        0,
-        24,
-        3,
-        3,
-        3,
-        3
-      )
-      .setOrigin(0, 0.5);
-
-    this.load.on("progress", (value) => {
-      fill.width = barContainer * value;
-    });
+    this.createProgressBar();
 
     this.load.image("retroFont", "assets/alphanumerical.png");
     this.load.spritesheet("button", "assets/button.png", {
@@ -115,5 +82,42 @@ export class Preloader extends Phaser.Scene {
     this.cameras.main.setBackgroundColor("#000010");
 
     this.cameras.main.fadeOut(250, 0, 0, 16);
+  }
+
+  createProgressBar() {
+    const barContainer = 260;
+    this.add
+      .nineslice(
+        this.scale.width / 2 - barContainer / 2,
+        this.scale.height / 2,
+        "loadingBar",
+        0,
+        barContainer,
+        24,
+        3,
+        3,
+        3,
+        3
+      )
+      .setOrigin(0, 0.5);
+
+    let fill = this.add
+      .nineslice(
+        this.scale.width / 2 - barContainer / 2,
+        this.scale.height / 2,
+        "loadingBar",
+        1,
+        0,
+        24,
+        3,
+        3,
+        3,
+        3
+      )
+      .setOrigin(0, 0.5);
+
+    this.load.on("progress", (value) => {
+      fill.width = barContainer * value;
+    });
   }
 }

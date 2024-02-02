@@ -9,51 +9,12 @@ export class Title extends Phaser.Scene {
 
   create() {
     this.createBackground();
+
     this.add.image(this.scale.width / 2, this.scale.height / 2 - 40, "logo");
 
-    var config = {
-      image: "retroFont",
-      width: 16,
-      height: 16,
-      chars: "1234567890!?ABCDEFGHIJKLMNOPQRSTUVWXYZ.,: ",
-      charsPerRow: 12,
-      spacing: { x: 0, y: 0 },
-    };
-    this.cache.bitmapFont.add(
-      "retroFont",
-      Phaser.GameObjects.RetroFont.Parse(this, config)
-    );
+    this.createRetroFont();
 
-    this.playButton = this.add
-      .nineslice(
-        this.scale.width / 2,
-        this.scale.height / 2 + 40,
-        "button",
-        0,
-        100,
-        35,
-        4,
-        4,
-        4,
-        4
-      )
-      .setInteractive({ useHandCursor: true });
-
-    this.buttonText = this.add
-      .bitmapText(
-        this.scale.width / 2,
-        this.scale.height / 2 + 40,
-        "retroFont",
-        "PLAY"
-      )
-      .setOrigin(0.5)
-      .setTint(0x606061);
-
-    this.keySpace = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.SPACE
-    );
-
-    this.playButton.on("pointerup", this.startGame, this);
+    this.createStartButton();
 
     this.tutorialText = this.add
       .bitmapText(
@@ -66,6 +27,7 @@ export class Title extends Phaser.Scene {
 
     this.music = this.sound.add("gameTheme", { loop: true });
     this.music.play();
+
     this.makeSFX();
     this.makeAnims();
     this.cameras.main.fadeIn(250, 0, 0, 16);
@@ -73,7 +35,7 @@ export class Title extends Phaser.Scene {
 
   update() {
     this.background.setFrame(this.backgroundAnim.frame.name);
-    // this.background.tilePositionX += 3;
+
     if (Phaser.Input.Keyboard.JustDown(this.keySpace)) {
       this.startGame();
     }
@@ -82,6 +44,7 @@ export class Title extends Phaser.Scene {
   startGame() {
     this.playButton.setFrame(1);
     this.buttonText.setY(this.buttonText.y + 2);
+
     this.sound.unlock();
     if (!this.sound.locked) {
       this.music.play();
@@ -90,6 +53,7 @@ export class Title extends Phaser.Scene {
         this.music.play();
       });
     }
+
     this.scene.start("Play", { startTime: this.time.now });
   }
 
@@ -164,5 +128,53 @@ export class Title extends Phaser.Scene {
         repeat: -1,
       });
     }
+  }
+
+  createRetroFont() {
+    var config = {
+      image: "retroFont",
+      width: 16,
+      height: 16,
+      chars: "1234567890!?ABCDEFGHIJKLMNOPQRSTUVWXYZ.,: ",
+      charsPerRow: 12,
+      spacing: { x: 0, y: 0 },
+    };
+    this.cache.bitmapFont.add(
+      "retroFont",
+      Phaser.GameObjects.RetroFont.Parse(this, config)
+    );
+  }
+
+  createStartButton() {
+    this.playButton = this.add
+      .nineslice(
+        this.scale.width / 2,
+        this.scale.height / 2 + 40,
+        "button",
+        0,
+        100,
+        35,
+        4,
+        4,
+        4,
+        4
+      )
+      .setInteractive({ useHandCursor: true });
+
+    this.buttonText = this.add
+      .bitmapText(
+        this.scale.width / 2,
+        this.scale.height / 2 + 40,
+        "retroFont",
+        "PLAY"
+      )
+      .setOrigin(0.5)
+      .setTint(0x606061);
+
+    this.keySpace = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.SPACE
+    );
+
+    this.playButton.on("pointerup", this.startGame, this);
   }
 }
