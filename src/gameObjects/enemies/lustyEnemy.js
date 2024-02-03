@@ -1,47 +1,17 @@
 import Phaser from "../../lib/phaser.js";
-import eventsCenter from "../../EventsCenter.js";
+import { BasicEnemy } from "./basicEnemy.js";
 
-export class LustyEnemy extends Phaser.Physics.Arcade.Sprite {
-  died = false;
-
+export class LustyEnemy extends BasicEnemy {
   constructor(scene) {
     super(scene, 0, 0, "lustyEnemy", 0);
-    this.setFlipX(true);
-    this.speed = 210;
 
-    this.dieSound = scene.sound.get("explosionSfx");
+    this.speed = 210;
   }
 
   spawn(x, y, target) {
-    this.died = false;
-    this.setPosition(x, y);
-
-    this.enableBody(true, x, y, true, true);
-    this.setCircle(16);
-    this.setVelocityX(-this.speed);
+    super.spawn(x, y);
 
     this.myBeloved = target;
-  }
-
-  die() {
-    if (this.died) {
-      return;
-    }
-
-    this.shootEvent && this.shootEvent.remove(false);
-    this.died = true;
-    this.play("explosionAnim");
-    this.dieSound.play();
-    this.setVelocity(0);
-    this.once(
-      Phaser.Animations.Events.ANIMATION_COMPLETE,
-      function () {
-        this.setTexture("lustyEnemy");
-        this.setFrame(0);
-        this.disableBody(true, true);
-      },
-      this
-    );
   }
 
   onImpact() {
@@ -78,12 +48,5 @@ export class LustyEnemy extends Phaser.Physics.Arcade.Sprite {
     if (this.x < -16) {
       this.disableBody(true, true);
     }
-  }
-
-  shootBullet() {
-    const x = this.x;
-    const y = this.y;
-
-    eventsCenter.emit("enemy-shoot", { x, y });
   }
 }

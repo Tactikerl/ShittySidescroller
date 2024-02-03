@@ -106,17 +106,6 @@ export class Play extends Phaser.Scene {
   }
 
   createControls() {
-    const stickSize = 70;
-    const joyStick = this.plugins.get("rexvirtualjoystickplugin").add(this, {
-      x: stickSize + 35,
-      y: this.scale.height - stickSize - 25,
-      radius: stickSize - 20,
-      base: this.add.image(0, 0, "controlBase").setAlpha(0.3),
-      thumb: this.add.image(0, 0, "controlThumb").setAlpha(0.3),
-      dir: "8dir",
-      forceMin: 0,
-    });
-
     const keyboard = this.input.keyboard.createCursorKeys();
     const keySpace = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.SPACE
@@ -125,15 +114,27 @@ export class Play extends Phaser.Scene {
       Phaser.Input.Keyboard.KeyCodes.SHIFT
     );
 
+    const stickSize = 70;
+    const joyStick = this.plugins.get("rexvirtualjoystickplugin").add(this, {
+      x: stickSize + 35,
+      y: this.scale.height - stickSize - 25,
+      radius: stickSize - 20,
+      base: this.add.image(0, 0, "controlBase").setDepth(1).setAlpha(0.3),
+      thumb: this.add.image(0, 0, "controlThumb").setDepth(2).setAlpha(0.3),
+      dir: "8dir",
+      forceMin: 0,
+    });
     const mobileButtons = { dButton: false, sButton: false };
     this.add
       .image(this.scale.width - 64 / 2, this.scale.height - 64 * 1.5, "dButton")
+      .setDepth(3)
       .setAlpha(0.5)
       .setInteractive()
       .on("pointerdown", () => (mobileButtons.dButton = true))
       .on("pointerup", () => (mobileButtons.dButton = false));
     this.add
       .image(this.scale.width - 64 * 2, this.scale.height - 64 / 2, "sButton")
+      .setDepth(4)
       .setAlpha(0.5)
       .setInteractive()
       .on("pointerdown", () => (mobileButtons.sButton = true))
