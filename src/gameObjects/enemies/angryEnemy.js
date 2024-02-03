@@ -30,6 +30,6 @@ export class AngryEnemy extends BasicEnemy {
     const x = this.x;
     const y = this.y;
 
-    eventsCenter.emit("enemy-shoot", { x, y });
+    eventsCenter.emit("enemy-shoot", { x, y, color: 0xdb74ff });
   }
 }

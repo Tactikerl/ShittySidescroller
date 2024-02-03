@@ -1,44 +1,30 @@
 import Phaser from "../lib/phaser.js";
 
-export class EnemyBullet extends Phaser.Physics.Arcade.Image {
+export class EnemyBullet extends Phaser.Physics.Arcade.Sprite {
   constructor(scene) {
-    super(scene, 0, 0, "bullet");
+    super(scene, 0, 0, "bolt");
 
     this.speed = -500;
-    this.setTint(0xfc7703);
+    // this.setTint(0xfc7703);
     this.enemyShoot = scene.sound.get("enemyShoot");
   }
 
-  fire(x, y) {
+  fire(x, y, color) {
     this.enemyShoot.play();
-    this.setPosition(x - 32, y);
-
-    this.enableBody(
-      // Enable physics body
-      true, // Reset body and game object, at (x, y)
-      x,
-      y,
-      true, // Activate sprite
-      true // Show sprite
-    );
+    this.play("enemyBolt");
+    this.setTint(color);
+    this.enableBody(true, x - 16, y, true, true);
+    this.setBodySize(16, 16).setOffset(3, 8);
     this.setVelocityX(this.speed);
   }
 
   hit() {
-    this.disableBody(
-      // Stop and disable physics body
-      true, // Deactivate sprite (active=false)
-      true // Hide sprite (visible=false)
-    );
+    this.disableBody(true, true);
   }
 
   update(time, delta) {
     if (this.x < -16) {
-      this.disableBody(
-        // Stop and disable physics body
-        true, // Deactivate sprite (active=false)
-        true // Hide sprite (visible=false)
-      );
+      this.disableBody(true, true);
     }
   }
 }

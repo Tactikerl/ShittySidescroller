@@ -37,7 +37,7 @@ export class Play extends Phaser.Scene {
       const bullet = this.enemyBullets.get();
 
       if (bullet) {
-        bullet.fire(config.x, config.y);
+        bullet.fire(config.x, config.y, config.color);
       }
     });
 

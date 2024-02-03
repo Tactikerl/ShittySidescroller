@@ -127,6 +127,16 @@ export class Title extends Phaser.Scene {
         frameRate: 15,
         repeat: -1,
       });
+      this.anims.create({
+        key: "enemyBolt",
+        frames: this.anims.generateFrameNumbers("bolt", {
+          start: 0,
+          end: 3,
+          first: 0,
+        }),
+        frameRate: 10,
+        repeat: -1,
+      });
     }
   }
 
