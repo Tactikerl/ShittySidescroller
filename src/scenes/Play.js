@@ -47,7 +47,8 @@ export class Play extends Phaser.Scene {
       this.player,
       this.collectibles,
       this.collectCollectible,
-      null,
+
+      (player, coin) => !coin.pickedUp,
       this
     );
 

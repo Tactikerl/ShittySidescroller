@@ -1,5 +1,6 @@
 import Phaser from "../lib/phaser.js";
 import eventsCenter from "../EventsCenter.js";
+import saveImage from "../utils/saveImage.js";
 
 export class PlayUI extends Phaser.Scene {
   constructor() {
@@ -31,6 +32,12 @@ export class PlayUI extends Phaser.Scene {
     this.healthBar();
 
     this.createStaminaBar();
+
+    this.input.keyboard.on("keydown-I", (event) => {
+      event.stopPropagation();
+
+      saveImage(this);
+    });
   }
 
   update(time, delta) {

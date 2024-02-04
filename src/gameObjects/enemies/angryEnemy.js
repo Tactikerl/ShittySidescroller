@@ -4,6 +4,7 @@ import { BasicEnemy } from "./basicEnemy.js";
 export class AngryEnemy extends BasicEnemy {
   constructor(scene) {
     super(scene, 0, 0, "enemy", 0);
+    this.particles.setParticleTint(0xff3131);
   }
 
   spawn(x, y) {

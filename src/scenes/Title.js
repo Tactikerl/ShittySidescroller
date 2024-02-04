@@ -138,6 +138,25 @@ export class Title extends Phaser.Scene {
         repeat: -1,
       });
     }
+    this.anims.create({
+      key: "coinFlip",
+      frames: this.anims.generateFrameNumbers("treasure", {
+        start: 0,
+        end: 3,
+        first: 0,
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: "coinFade",
+      frames: this.anims.generateFrameNumbers("treasure", {
+        start: 4,
+        end: 7,
+        first: 0,
+      }),
+      frameRate: 10,
+    });
   }
 
   createRetroFont() {

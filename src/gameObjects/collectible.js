@@ -1,7 +1,7 @@
 import Phaser from "../lib/phaser.js";
-export class Collectible extends Phaser.Physics.Arcade.Image {
+export class Collectible extends Phaser.Physics.Arcade.Sprite {
   constructor(scene) {
-    super(scene, 0, 0, "collectible");
+    super(scene, 0, 0, "treasure");
     this.isFading = false;
     this.pickupSound = scene.sound.get("pickup");
   }
@@ -12,14 +12,21 @@ export class Collectible extends Phaser.Physics.Arcade.Image {
     this.isFading = false;
 
     this.enableBody(true, x, y, true, true);
+    this.play("coinFlip");
   }
 
   collectedOrFaded(fading = false) {
     this.fadingTween && this.fadingTween.remove();
     this.setTint(Phaser.Display.Color.GetColor(255, 255, 255));
-    this.disableBody(true, true);
-    if (!fading) {
+    if (fading) {
+      this.disableBody(true, true);
+    } else {
+      this.pickedUp = true;
+      this.play("coinFade");
       this.pickupSound.play();
+      this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, function () {
+        this.disableBody(true, true);
+      });
     }
   }
 

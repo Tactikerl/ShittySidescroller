@@ -4,7 +4,7 @@ import { BasicEnemy } from "./basicEnemy.js";
 export class LustyEnemy extends BasicEnemy {
   constructor(scene) {
     super(scene, 0, 0, "lustyEnemy", 0);
-
+    this.particles.setParticleTint(0xff10f0);
     this.speed = 210;
   }
 
@@ -47,6 +47,7 @@ export class LustyEnemy extends BasicEnemy {
 
     if (this.x < -16) {
       this.disableBody(true, true);
+      this.particles.stop();
     }
   }
 }

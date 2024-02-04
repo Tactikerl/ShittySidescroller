@@ -11,6 +11,18 @@ export class BasicEnemy extends Phaser.Physics.Arcade.Sprite {
     this.setFlipX(true);
 
     this.dieSound = scene.sound.get("explosionSfx");
+    this.particles = scene.add.particles(5, 0, "enemyStar", {
+      speed: 100,
+      scale: { start: 1, end: 0 },
+      lifespan: 500,
+      quantity: 1,
+      //gravityX: 600,
+      //radial: false,
+      blendMode: "ADD",
+      follow: this,
+      angle: { max: 45, min: -45 },
+      emitting: false,
+    });
   }
 
   spawn(x, y) {
@@ -20,6 +32,7 @@ export class BasicEnemy extends Phaser.Physics.Arcade.Sprite {
     this.enableBody(true, x, y, true, true);
     this.setCircle(16);
     this.setVelocityX(-this.speed);
+    this.particles.start();
   }
 
   die() {
@@ -31,6 +44,7 @@ export class BasicEnemy extends Phaser.Physics.Arcade.Sprite {
     this.play("explosionAnim");
     this.dieSound.play();
     this.setVelocity(0);
+    this.particles.stop();
     this.once(
       Phaser.Animations.Events.ANIMATION_COMPLETE,
       function () {
@@ -51,6 +65,7 @@ export class BasicEnemy extends Phaser.Physics.Arcade.Sprite {
 
     if (this.x < -16) {
       this.disableBody(true, true);
+      this.particles.stop();
     }
   }
 }

@@ -4,7 +4,7 @@ import { BasicEnemy } from "./basicEnemy.js";
 export class ZigzagEnemy extends BasicEnemy {
   constructor(scene) {
     super(scene, 0, 0, "zigzagEnemy");
-
+    this.particles.setParticleTint(0x1f51ff);
     this.speed = 300;
   }
 
@@ -37,6 +37,7 @@ export class ZigzagEnemy extends BasicEnemy {
     this.setVelocityY(200 * sinTime);
     if (this.x < -16) {
       this.disableBody(true, true);
+      this.particles.stop();
     }
     this.setFrame(0);
     if (this.body.velocity.y < -50) {
