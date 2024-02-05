@@ -11,7 +11,7 @@ export class Play extends Phaser.Scene {
     super({ key: "Play" });
   }
 
-  create(data) {
+  create() {
     //Adding sprites, sounds, etc...
     this.createBackground();
 
@@ -72,10 +72,17 @@ export class Play extends Phaser.Scene {
       loop: true,
     });
 
+    let time = 0;
+    this.time.addEvent({
+      delay: 1000,
+      callback: () => eventsCenter.emit("play-time", ++time),
+      callbackScope: null,
+      loop: true,
+    });
+
     this.score = 0;
     this.scene.launch("PlayUI", {
       score: this.score,
-      startTime: data.startTime,
     });
 
     this.createControls();
@@ -263,8 +270,8 @@ export class Play extends Phaser.Scene {
 
   // This is the trash collection.
   restartGame() {
-    eventsCenter.off("enemy-shoot");
-    eventsCenter.off("update-score");
-    this.scene.restart({ startTime: 0 });
+    eventsCenter.removeAllListeners();
+    //this.scene.stop("PlayUI");
+    this.scene.restart();
   }
 }

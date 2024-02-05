@@ -18,6 +18,7 @@ export class PlayUI extends Phaser.Scene {
     );
 
     this.keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+
     this.pauseText = this.add
       .bitmapText(360, 240, "retroFont", "GAME PAUSED")
       .setOrigin(0.5)
@@ -26,8 +27,13 @@ export class PlayUI extends Phaser.Scene {
     this.playTime = this.add
       .bitmapText(this.scale.width, 5, "retroFont", "00:00:00")
       .setOrigin(1, 0);
-
-    this.gameStartTime = this.time.now + data.startTime;
+    eventsCenter.on(
+      "play-time",
+      (time) => {
+        this.playTime.text = new Date(time * 1000).toISOString().slice(11, 19);
+      },
+      this
+    );
 
     this.healthBar();
 
@@ -54,11 +60,6 @@ export class PlayUI extends Phaser.Scene {
         this.sound.setVolume(0.5);
       }
     }
-
-    const playSeconds = Math.round((time - this.gameStartTime) * 0.001);
-    this.playTime.text = new Date(playSeconds * 1000)
-      .toISOString()
-      .slice(11, 19);
   }
 
   healthBar() {

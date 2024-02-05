@@ -54,7 +54,7 @@ export class Title extends Phaser.Scene {
       });
     }
 
-    this.scene.start("Play", { startTime: this.time.now });
+    this.scene.start("Play");
   }
 
   createBackground() {
