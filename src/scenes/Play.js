@@ -47,8 +47,7 @@ export class Play extends Phaser.Scene {
       this.player,
       this.collectibles,
       this.collectCollectible,
-
-      (player, coin) => !coin.pickedUp,
+      null,
       this
     );
 
@@ -174,10 +173,6 @@ export class Play extends Phaser.Scene {
         enemies,
         this.bullets,
         (enemy, bullet) => {
-          if (enemy.died) {
-            return;
-          }
-
           bullet.hit();
           enemy.die();
 
@@ -192,10 +187,6 @@ export class Play extends Phaser.Scene {
         this.player,
         enemies,
         (player, enemy) => {
-          if (enemy.died) {
-            return;
-          }
-
           if (!player.invisFrames) {
             player.disableMe();
           }

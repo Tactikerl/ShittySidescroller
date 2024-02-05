@@ -21,7 +21,7 @@ export class Collectible extends Phaser.Physics.Arcade.Sprite {
     if (fading) {
       this.disableBody(true, true);
     } else {
-      this.pickedUp = true;
+      this.disableBody(false, false);
       this.play("coinFade");
       this.pickupSound.play();
       this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, function () {

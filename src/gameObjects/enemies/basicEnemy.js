@@ -26,7 +26,6 @@ export class BasicEnemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   spawn(x, y) {
-    this.died = false;
     this.setPosition(x, y);
 
     this.enableBody(true, x, y, true, true);
@@ -40,7 +39,7 @@ export class BasicEnemy extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    this.died = true;
+    this.disableBody(false, false);
     this.play("explosionAnim");
     this.dieSound.play();
     this.setVelocity(0);
