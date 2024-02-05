@@ -1,6 +1,6 @@
 import Phaser from "../lib/phaser.js";
 import eventsCenter from "../EventsCenter.js";
-import saveImage from "../utils/saveImage.js";
+import { saveGif } from "../utils/saveImage.js";
 
 export class PlayUI extends Phaser.Scene {
   constructor() {
@@ -36,7 +36,7 @@ export class PlayUI extends Phaser.Scene {
     this.input.keyboard.on("keydown-I", (event) => {
       event.stopPropagation();
 
-      saveImage(this);
+      saveGif(this, 3000);
     });
   }
 
