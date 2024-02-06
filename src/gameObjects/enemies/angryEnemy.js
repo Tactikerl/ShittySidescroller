@@ -19,9 +19,6 @@ export class AngryEnemy extends BasicEnemy {
   }
 
   die() {
-    if (this.died) {
-      return;
-    }
     super.die();
 
     this.shootEvent.remove(false);

@@ -19,7 +19,7 @@ export class LustyEnemy extends BasicEnemy {
   }
 
   update(time, delta) {
-    if (this.died) {
+    if (!this.body.enable) {
       return;
     }
 

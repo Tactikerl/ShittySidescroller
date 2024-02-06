@@ -20,16 +20,13 @@ export class ZigzagEnemy extends BasicEnemy {
   }
 
   die() {
-    if (this.died) {
-      return;
-    }
     super.die();
 
     this.shootEvent.remove(false);
   }
 
   update(time, delta) {
-    if (this.died) {
+    if (!this.body.enable) {
       return;
     }
 

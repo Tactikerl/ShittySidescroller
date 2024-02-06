@@ -35,10 +35,6 @@ export class BasicEnemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   die() {
-    if (this.died) {
-      return;
-    }
-
     this.disableBody(false, false);
     this.play("explosionAnim");
     this.dieSound.play();
@@ -58,7 +54,7 @@ export class BasicEnemy extends Phaser.Physics.Arcade.Sprite {
   onImpact() {}
 
   update(time, delta) {
-    if (this.died) {
+    if (!this.body.enable) {
       return;
     }
 
