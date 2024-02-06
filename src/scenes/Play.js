@@ -176,7 +176,7 @@ export class Play extends Phaser.Scene {
           bullet.hit();
           enemy.die();
 
-          this.score += 10;
+          this.score += enemy.getKillScore();
           eventsCenter.emit("update-score", this.score);
         },
         null,

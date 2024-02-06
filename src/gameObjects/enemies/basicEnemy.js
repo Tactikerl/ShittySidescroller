@@ -51,6 +51,10 @@ export class BasicEnemy extends Phaser.Physics.Arcade.Sprite {
     );
   }
 
+  getKillScore() {
+    return 10;
+  }
+
   onImpact() {}
 
   update(time, delta) {

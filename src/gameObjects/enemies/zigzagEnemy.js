@@ -25,6 +25,10 @@ export class ZigzagEnemy extends BasicEnemy {
     this.shootEvent.remove(false);
   }
 
+  getKillScore() {
+    return 20;
+  }
+
   update(time, delta) {
     if (!this.body.enable) {
       return;

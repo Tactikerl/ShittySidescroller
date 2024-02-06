@@ -10,8 +10,12 @@ export class LustyEnemy extends BasicEnemy {
 
   spawn(x, y, target) {
     super.spawn(x, y);
-
+    this.lifeTime = 0;
     this.myBeloved = target;
+  }
+
+  getKillScore() {
+    return Math.ceil(this.lifeTime / 1000) * 10;
   }
 
   onImpact() {
@@ -19,6 +23,7 @@ export class LustyEnemy extends BasicEnemy {
   }
 
   update(time, delta) {
+    this.lifeTime += delta;
     if (!this.body.enable) {
       return;
     }
