@@ -1,15 +1,16 @@
 import Phaser from "./lib/phaser.js";
 import { Boot } from "./scenes/Boot.js";
+import { Preloader } from "./scenes/Preloader.js";
 import { Title } from "./scenes/Title.js";
 import { Play } from "./scenes/Play.js";
 import { PlayUI } from "./scenes/PlayUI.js";
-import { Preloader } from "./scenes/Preloader.js";
+import { Scoreboard } from "./scenes/Scoreboard.js";
 
 var config = {
   type: Phaser.AUTO,
   width: 720,
   height: 400,
-  scene: [Boot, Preloader, Title, Play, PlayUI],
+  scene: [Boot, Preloader, Title, Play, PlayUI, Scoreboard],
   backgroundColor: 0x000010,
   parent: "game-wrapper",
   physics: {

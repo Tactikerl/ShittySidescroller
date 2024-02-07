@@ -10,11 +10,24 @@ export class Title extends Phaser.Scene {
   create() {
     this.createBackground();
 
-    this.add.image(this.scale.width / 2, this.scale.height / 2 - 40, "logo");
+    this.add.image(this.scale.width / 2, 80, "logo");
 
     this.createRetroFont();
 
-    this.createStartButton();
+    this.buttonList = [];
+    this.createButton(
+      this.scale.height / 2 - 30,
+      "PLAY",
+      this.startGame,
+      Phaser.Input.Keyboard.KeyCodes.SPACE
+    );
+    this.createButton(
+      this.scale.height / 2 + 30,
+      "SCOREBOARD",
+      this.goToScoreboard,
+      Phaser.Input.Keyboard.KeyCodes.S,
+      180
+    );
 
     this.tutorialText = this.add
       .bitmapText(
@@ -36,25 +49,11 @@ export class Title extends Phaser.Scene {
   update() {
     this.background.setFrame(this.backgroundAnim.frame.name);
 
-    if (Phaser.Input.Keyboard.JustDown(this.keySpace)) {
-      this.startGame();
+    for (const button of this.buttonList) {
+      if (Phaser.Input.Keyboard.JustDown(button.key)) {
+        button.callback();
+      }
     }
-  }
-
-  startGame() {
-    this.playButton.setFrame(1);
-    this.buttonText.setY(this.buttonText.y + 2);
-
-    this.sound.unlock();
-    if (!this.sound.locked) {
-      this.music.play();
-    } else {
-      this.sound.once(Phaser.Sound.Events.UNLOCKED, () => {
-        this.music.play();
-      });
-    }
-
-    this.scene.start("Play");
   }
 
   createBackground() {
@@ -174,36 +173,44 @@ export class Title extends Phaser.Scene {
     );
   }
 
-  createStartButton() {
-    this.playButton = this.add
-      .nineslice(
-        this.scale.width / 2,
-        this.scale.height / 2 + 40,
-        "button",
-        0,
-        100,
-        35,
-        4,
-        4,
-        4,
-        4
-      )
-      .setInteractive({ useHandCursor: true });
+  createButton(y, txt, callback, keyName, width = 100) {
+    const cap = this.add
+      .nineslice(this.scale.width / 2, y, "button", 0, width, 35, 4, 4, 4, 4)
+      .setInteractive({ useHandCursor: true })
+      .on("pointerup", callback, this);
 
-    this.buttonText = this.add
-      .bitmapText(
-        this.scale.width / 2,
-        this.scale.height / 2 + 40,
-        "retroFont",
-        "PLAY"
-      )
+    const label = this.add
+      .bitmapText(this.scale.width / 2, y, "retroFont", txt)
       .setOrigin(0.5)
       .setTint(0x606061);
 
-    this.keySpace = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.SPACE
-    );
+    const key = this.input.keyboard.addKey(keyName);
 
-    this.playButton.on("pointerup", this.startGame, this);
+    this.buttonList.push({ cap, label, key, callback });
+  }
+
+  startGame() {
+    const button = this.buttonList.find((b) => b.label.text === "PLAY");
+    button.cap.setFrame(1);
+    button.label.setY(button.label.y + 2);
+
+    this.sound.unlock();
+    if (!this.sound.locked) {
+      this.music.play();
+    } else {
+      this.sound.once(Phaser.Sound.Events.UNLOCKED, () => {
+        this.music.play();
+      });
+    }
+
+    this.scene.start("Play");
+  }
+
+  goToScoreboard() {
+    const button = this.buttonList.find((b) => b.label.text === "SCOREBOARD");
+    button.cap.setFrame(1);
+    button.label.setY(button.label.y + 2);
+
+    this.scene.start("Scoreboard");
   }
 }
