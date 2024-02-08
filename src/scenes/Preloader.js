@@ -69,6 +69,7 @@ export class Preloader extends Phaser.Scene {
     this.load.image("sButton", " assets/sButton.png");
     this.load.image("controlBase", "assets/controlBase.png");
     this.load.image("controlThumb", "assets/controlThumb.png");
+    this.load.image("block", "assets/marker.png");
 
     const url =
       "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js";

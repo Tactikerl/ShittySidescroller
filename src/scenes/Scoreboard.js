@@ -33,6 +33,8 @@ export class Scoreboard extends Phaser.Scene {
 
       this.stars.create(x, y);
     }
+    this.input.keyboard.enabled = false;
+    this.scene.launch("InputScore");
   }
 
   update(time, delta) {
