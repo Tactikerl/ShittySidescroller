@@ -7,19 +7,11 @@ export class InputScore extends Phaser.Scene {
     });
 
     this.chars = [
+      ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
       ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"],
       ["K", "L", "M", "N", "O", "P", "Q", "R", "S", "T"],
       ["U", "V", "W", "X", "Y", "Z", ".", "-", "<", ">"],
     ];
-
-    /*this.chars = [
-      ["A", "B", "C", "D", "E"],
-      ["F", "G", "H", "I", "J"],
-      ["K", "L", "M", "N", "O"],
-      ["P", "Q", "R", "S", "T"],
-      ["U", "V", "W", "X", "Y"],
-      ["Z", ".", "-", "<", ">"]
-    ];*/
 
     this.rows = this.chars.length;
     this.columns = this.chars[0].length;
@@ -31,13 +23,16 @@ export class InputScore extends Phaser.Scene {
 
     this.name = "";
     this.charLimit = 4;
+    this.inputScale = 1;
   }
 
-  create() {
-    this.padding = 0;
+  create(data = { padding: 0 }) {
+    this.scene.bringToTop();
+
+    this.padding = data.padding * this.inputScale;
     this.letterSpacing = 20;
-    var charWidth = 16;
-    var charHeight = 16;
+    var charWidth = 16 * this.inputScale;
+    var charHeight = 16 * this.inputScale;
     var lineHeight = 2;
     this.xSpacing = charWidth + this.letterSpacing;
     this.ySpacing = charHeight * lineHeight;
@@ -50,12 +45,9 @@ export class InputScore extends Phaser.Scene {
       }
     }
 
-    let text = this.add.bitmapText(
-      30 + this.padding,
-      50,
-      "retroFont",
-      characters
-    );
+    let text = this.add
+      .bitmapText(this.padding, 50, "retroFont", characters)
+      .setScale(this.inputScale);
 
     text.setLetterSpacing(this.letterSpacing);
     text.setInteractive();
@@ -119,18 +111,18 @@ export class InputScore extends Phaser.Scene {
       this.cursor.x--;
       this.block.x -= this.xSpacing;
     } else {
-      this.cursor.x = 9;
-      this.block.x += this.xSpacing * 9;
+      this.cursor.x = this.columns - 1;
+      this.block.x += this.xSpacing * (this.columns - 1);
     }
   }
 
   moveRight() {
-    if (this.cursor.x < 9) {
+    if (this.cursor.x < this.columns - 1) {
       this.cursor.x++;
       this.block.x += this.xSpacing;
     } else {
       this.cursor.x = 0;
-      this.block.x -= this.xSpacing * 9;
+      this.block.x -= this.xSpacing * (this.columns - 1);
     }
   }
 
@@ -139,18 +131,18 @@ export class InputScore extends Phaser.Scene {
       this.cursor.y--;
       this.block.y -= this.ySpacing;
     } else {
-      this.cursor.y = 2;
-      this.block.y += this.ySpacing * 2;
+      this.cursor.y = this.rows - 1;
+      this.block.y += this.ySpacing * (this.rows - 1);
     }
   }
 
   moveDown() {
-    if (this.cursor.y < 2) {
+    if (this.cursor.y < this.rows - 1) {
       this.cursor.y++;
       this.block.y += this.ySpacing;
     } else {
       this.cursor.y = 0;
-      this.block.y -= this.ySpacing * 2;
+      this.block.y -= this.ySpacing * (this.rows - 1);
     }
   }
 
@@ -160,7 +152,7 @@ export class InputScore extends Phaser.Scene {
     let code = event.keyCode;
 
     if (code === Phaser.Input.Keyboard.KeyCodes.PERIOD) {
-      this.cursor.set(6, 2);
+      this.cursor.set(6, 3);
       this.pressKey();
     } else if (code === Phaser.Input.Keyboard.KeyCodes.MINUS) {
       this.cursor.set(7, 2);
@@ -175,7 +167,29 @@ export class InputScore extends Phaser.Scene {
       code >= Phaser.Input.Keyboard.KeyCodes.A &&
       code <= Phaser.Input.Keyboard.KeyCodes.Z
     ) {
-      code -= 65;
+      code -= Phaser.Input.Keyboard.KeyCodes.A;
+
+      let y = Math.floor(code / 10);
+      let x = code - y * 10;
+
+      this.cursor.set(x, y + 1);
+      this.pressKey();
+    } else if (
+      code >= Phaser.Input.Keyboard.KeyCodes.NUMPAD_ZERO &&
+      code <= Phaser.Input.Keyboard.KeyCodes.NUMPAD_NINE
+    ) {
+      code -= Phaser.Input.Keyboard.KeyCodes.NUMPAD_ZERO;
+
+      let y = Math.floor(code / 10);
+      let x = code - y * 10;
+
+      this.cursor.set(x, y);
+      this.pressKey();
+    } else if (
+      code >= Phaser.Input.Keyboard.KeyCodes.ZERO &&
+      code <= Phaser.Input.Keyboard.KeyCodes.NINE
+    ) {
+      code -= Phaser.Input.Keyboard.KeyCodes.ZERO;
 
       let y = Math.floor(code / 10);
       let x = code - y * 10;

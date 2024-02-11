@@ -1,16 +1,6 @@
 import Phaser from "../lib/phaser.js";
 
 export class Scoreboard extends Phaser.Scene {
-  stars;
-
-  distance = 300;
-  speed = 250;
-
-  max = 500;
-  xx = [];
-  yy = [];
-  zz = [];
-
   constructor() {
     super({
       key: "Scoreboard",
@@ -18,41 +8,99 @@ export class Scoreboard extends Phaser.Scene {
   }
 
   create() {
+    this.scene.launch("ScoreField");
+    this.scene.bringToTop();
+
+    this.padding = this.scale.width / 2 - 340 / 2;
+    this.topPadding = 200;
+    this.fontSize = 16;
+    this.listSpacing = 25;
+    this.extraPadding = 30;
+
+    this.add
+      .bitmapText(
+        this.padding + this.extraPadding,
+        this.topPadding,
+        "retroFont",
+        "RANK  SCORE   NAME"
+      )
+      .setTint(0xff00ff);
+
+    this.add
+      .bitmapText(
+        this.padding + this.fontSize * 6 + this.extraPadding,
+        this.listSpacing + this.topPadding,
+        "retroFont",
+        "50000"
+      )
+      .setTint(0x0261c7);
+
+    this.playerText = this.add
+      .bitmapText(
+        this.fontSize * 14 + this.padding + this.extraPadding,
+        this.listSpacing + this.topPadding,
+        "retroFont",
+        ""
+      )
+      .setTint(0x0261c7);
+
     this.input.keyboard.enabled = false;
 
-    this.stars = this.add.blitter(0, 0, "star", 4).setAlpha(0.5);
+    this.scene.launch("InputScore", { padding: this.padding });
 
-    for (let i = 0; i < this.max; i++) {
-      this.xx[i] = Math.floor(Math.random() * 800) - 400;
-      this.yy[i] = Math.floor(Math.random() * 600) - 300;
-      this.zz[i] = Math.floor(Math.random() * 1700) - 100;
+    let panel = this.scene.get("InputScore");
 
-      let perspective = this.distance / (this.distance - this.zz[i]);
-      let x = 400 + this.xx[i] * perspective;
-      let y = 300 + this.yy[i] * perspective;
-
-      this.stars.create(x, y);
-    }
-    this.input.keyboard.enabled = false;
-    this.scene.launch("InputScore");
+    panel.events.on("updateName", this.updateName, this);
+    panel.events.on("submitName", this.submitName, this);
   }
 
-  update(time, delta) {
-    for (let i = 0; i < this.max; i++) {
-      let perspective = this.distance / (this.distance - this.zz[i]);
-      let x = 400 + this.xx[i] * perspective;
-      let y = 300 + this.yy[i] * perspective;
+  submitName() {
+    this.scene.stop("InputScore");
 
-      this.zz[i] += this.speed * (delta / 1000);
+    this.add
+      .bitmapText(
+        this.padding + this.extraPadding,
+        this.listSpacing + this.topPadding,
+        "retroFont",
+        "1ND   50000   " + this.playerText.text
+      )
+      .setTint(0xff0000);
 
-      if (this.zz[i] > 300) {
-        this.zz[i] -= 600;
-      }
+    this.add
+      .bitmapText(
+        this.padding + this.extraPadding,
+        this.listSpacing * 2 + this.topPadding,
+        "retroFont",
+        "2ND   40000   ANT"
+      )
+      .setTint(0xff8200);
+    this.add
+      .bitmapText(
+        this.padding + this.extraPadding,
+        this.listSpacing * 3 + this.topPadding,
+        "retroFont",
+        "3RD   30000   .A."
+      )
+      .setTint(0xffff00);
+    this.add
+      .bitmapText(
+        this.padding + this.extraPadding,
+        this.listSpacing * 4 + this.topPadding,
+        "retroFont",
+        "4TH   20000   BOB"
+      )
+      .setTint(0x00ff00);
+    this.add
+      .bitmapText(
+        this.padding + this.extraPadding,
+        this.listSpacing * 5 + this.topPadding,
+        "retroFont",
+        "5TH   10000   ZIK"
+      )
+      .setTint(0x00bfff);
+  }
 
-      let bob = this.stars.children.list[i];
-
-      bob.x = x;
-      bob.y = y;
-    }
+  updateName(name) {
+    this.playerText.setText(name);
   }
 }
