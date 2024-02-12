@@ -156,6 +156,15 @@ export class Title extends Phaser.Scene {
       }),
       frameRate: 10,
     });
+    this.anims.create({
+      key: "heartBeat",
+      frames: this.anims.generateFrameNumbers("heartPickup", {
+        start: 0,
+        end: 1,
+      }),
+      frameRate: 5,
+      repeat: -1,
+    });
   }
 
   createRetroFont() {

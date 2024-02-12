@@ -4,6 +4,7 @@ import { Bullet } from "../gameObjects/bullet.js";
 import { enemyTypeList } from "../gameObjects/enemies/enemies.js";
 import { Collectible } from "../gameObjects/collectible.js";
 import { EnemyBullet } from "../gameObjects/enemyBullet.js";
+import { HealthPickup } from "../gameObjects/healthPickup.js";
 import eventsCenter from "../EventsCenter.js";
 
 export class Play extends Phaser.Scene {
@@ -20,6 +21,8 @@ export class Play extends Phaser.Scene {
       maxSize: 1,
       runChildUpdate: true,
     });
+
+    this.healthPickup = new HealthPickup(this);
 
     this.bullets = this.physics.add.group({
       classType: Bullet,

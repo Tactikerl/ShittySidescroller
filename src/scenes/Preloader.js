@@ -63,6 +63,10 @@ export class Preloader extends Phaser.Scene {
       frameWidth: 16,
       frameHeight: 16,
     });
+    this.load.spritesheet("heartPickup", "assets/HpPickup.png", {
+      frameHeight: 32,
+      frameWidth: 32,
+    });
 
     this.load.image("logo", " assets/Logo.png");
     this.load.image("dButton", " assets/dButton.png");
