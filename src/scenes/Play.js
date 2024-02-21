@@ -62,6 +62,20 @@ export class Play extends Phaser.Scene {
       this
     );
 
+    this.physics.add.overlap(
+      this.player,
+      this.healthPickup,
+      (player, pickUp) => {
+        pickUp.collectedOrFaded();
+        if (player.health < 3) {
+          player.health++;
+        }
+        eventsCenter.emit("health-pickup", player.health);
+      },
+      null,
+      this
+    );
+
     this.createEnemies();
 
     this.enemyCount = 0;

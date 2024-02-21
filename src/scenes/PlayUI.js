@@ -76,6 +76,10 @@ export class PlayUI extends Phaser.Scene {
       this.HP.push(heart);
     }
 
+    eventsCenter.on("health-pickup", (health) => {
+      this.HP[health - 1].setFrame(0);
+    });
+
     eventsCenter.on("playerDamage", (health) => {
       this.HP[health].setFrame(2);
     });
