@@ -1,5 +1,4 @@
 import Phaser from "../../lib/phaser.js";
-import eventsCenter from "../../EventsCenter.js";
 
 export class BasicEnemy extends Phaser.Physics.Arcade.Sprite {
   died = false;

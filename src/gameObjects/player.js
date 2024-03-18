@@ -1,5 +1,5 @@
 import Phaser from "../lib/phaser.js";
-import eventsCenter from "../EventsCenter.js";
+import eventsCenter, { events } from "../EventsCenter.js";
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   lastFired = 0;
@@ -53,7 +53,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   disableMe() {
     this.health--;
-    eventsCenter.emit("playerDamage", this.health);
+    eventsCenter.emit(events.playerDamage, this.health);
 
     if (this.health == 0) {
       this.disableBody(true, true);
@@ -95,7 +95,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         this.dashSound.play();
-        eventsCenter.emit("player-dashing", {
+        eventsCenter.emit(events.playerDashing, {
           dashingTime: 200,
           cooldownTime: 1000,
         });

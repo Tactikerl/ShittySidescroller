@@ -1,4 +1,4 @@
-import eventsCenter from "../../EventsCenter.js";
+import eventsCenter, { events } from "../../EventsCenter.js";
 import { BasicEnemy } from "./basicEnemy.js";
 
 export class AngryEnemy extends BasicEnemy {
@@ -28,6 +28,6 @@ export class AngryEnemy extends BasicEnemy {
     const x = this.x;
     const y = this.y;
 
-    eventsCenter.emit("enemy-shoot", { x, y, color: 0xdb74ff });
+    eventsCenter.emit(events.enemyShoot, { x, y, color: 0xdb74ff });
   }
 }

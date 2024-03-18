@@ -1,4 +1,4 @@
-import eventsCenter from "../../EventsCenter.js";
+import eventsCenter, { events } from "../../EventsCenter.js";
 import { BasicEnemy } from "./basicEnemy.js";
 
 export class ZigzagEnemy extends BasicEnemy {
@@ -54,6 +54,6 @@ export class ZigzagEnemy extends BasicEnemy {
     const x = this.x;
     const y = this.y;
 
-    eventsCenter.emit("enemy-shoot", { x, y });
+    eventsCenter.emit(events.enemyShoot, { x, y });
   }
 }

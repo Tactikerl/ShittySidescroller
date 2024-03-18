@@ -1,6 +1,14 @@
 import Phaser from "../lib/phaser.js";
-import eventsCenter from "../EventsCenter.js";
+import eventsCenter, { events } from "../EventsCenter.js";
 import { saveGif } from "../utils/saveImage.js";
+
+const {
+  healthPickup,
+  playTime,
+  updateScore,
+  playerDamage,
+  playerDashing,
+} = events;
 
 export class PlayUI extends Phaser.Scene {
   constructor() {
@@ -12,7 +20,7 @@ export class PlayUI extends Phaser.Scene {
   create(data) {
     this.scoreText = this.add.bitmapText(5, 5, "retroFont", data.score);
     eventsCenter.on(
-      "update-score",
+      updateScore,
       (score) => (this.scoreText.text = score),
       this
     );
@@ -28,7 +36,7 @@ export class PlayUI extends Phaser.Scene {
       .bitmapText(this.scale.width, 5, "retroFont", "00:00:00")
       .setOrigin(1, 0);
     eventsCenter.on(
-      "play-time",
+      playTime,
       (time) => {
         this.playTime.text = new Date(time * 1000).toISOString().slice(11, 19);
       },
@@ -76,11 +84,11 @@ export class PlayUI extends Phaser.Scene {
       this.HP.push(heart);
     }
 
-    eventsCenter.on("health-pickup", (health) => {
+    eventsCenter.on(healthPickup, (health) => {
       this.HP[health - 1].setFrame(0);
     });
 
-    eventsCenter.on("playerDamage", (health) => {
+    eventsCenter.on(playerDamage, (health) => {
       this.HP[health].setFrame(2);
     });
   }
@@ -118,7 +126,7 @@ export class PlayUI extends Phaser.Scene {
       )
       .setOrigin(0, 0.5);
 
-    eventsCenter.on("player-dashing", this.dashUpdate, this);
+    eventsCenter.on(playerDashing, this.dashUpdate, this);
   }
 
   dashUpdate(dashTimes) {

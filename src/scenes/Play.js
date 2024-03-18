@@ -5,7 +5,9 @@ import { enemyTypeList } from "../gameObjects/enemies/enemies.js";
 import { Collectible } from "../gameObjects/collectible.js";
 import { EnemyBullet } from "../gameObjects/enemyBullet.js";
 import { HealthPickup } from "../gameObjects/healthPickup.js";
-import eventsCenter from "../EventsCenter.js";
+import eventsCenter, { events } from "../EventsCenter.js";
+
+const { enemyShoot, healthPickup, playTime, updateScore } = events;
 
 export class Play extends Phaser.Scene {
   constructor() {
@@ -36,7 +38,7 @@ export class Play extends Phaser.Scene {
       runChildUpdate: true,
     });
 
-    eventsCenter.on("enemy-shoot", (config) => {
+    eventsCenter.on(enemyShoot, (config) => {
       const bullet = this.enemyBullets.get();
 
       if (bullet) {
@@ -70,7 +72,7 @@ export class Play extends Phaser.Scene {
         if (player.health < 3) {
           player.health++;
         }
-        eventsCenter.emit("health-pickup", player.health);
+        eventsCenter.emit(healthPickup, player.health);
       },
       null,
       this
@@ -91,7 +93,7 @@ export class Play extends Phaser.Scene {
     let time = 0;
     this.time.addEvent({
       delay: 1000,
-      callback: () => eventsCenter.emit("play-time", ++time),
+      callback: () => eventsCenter.emit(playTime, ++time),
       callbackScope: null,
       loop: true,
     });
@@ -194,7 +196,7 @@ export class Play extends Phaser.Scene {
           enemy.die();
 
           this.score += enemy.getKillScore();
-          eventsCenter.emit("update-score", this.score);
+          eventsCenter.emit(updateScore, this.score);
         },
         null,
         this
@@ -273,7 +275,7 @@ export class Play extends Phaser.Scene {
   collectCollectible(player, collectible) {
     collectible.collectedOrFaded();
     this.score += 25;
-    eventsCenter.emit("update-score", this.score);
+    eventsCenter.emit(updateScore, this.score);
   }
 
   // This is the trash collection.
