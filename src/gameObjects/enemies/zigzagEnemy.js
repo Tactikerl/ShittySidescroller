@@ -23,6 +23,7 @@ export class ZigzagEnemy extends BasicEnemy {
     super.die();
 
     this.shootEvent.remove(false);
+    return true;
   }
 
   getKillScore() {

@@ -193,10 +193,11 @@ export class Play extends Phaser.Scene {
         this.bullets,
         (enemy, bullet) => {
           bullet.hit();
-          enemy.die();
-
-          this.score += enemy.getKillScore();
-          eventsCenter.emit(updateScore, this.score);
+          const isDead = enemy.die();
+          if (isDead) {
+            this.score += enemy.getKillScore();
+            eventsCenter.emit(updateScore, this.score);
+          }
         },
         null,
         this
