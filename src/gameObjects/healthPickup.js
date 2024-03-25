@@ -30,9 +30,12 @@ export class HealthPickup extends Phaser.Physics.Arcade.Sprite {
   }
 
   collectedOrFaded(faded = false) {
+    if (!this.body) {
+      return;
+    }
     this.fadingTween && this.fadingTween.remove();
     this.setTint(Phaser.Display.Color.GetColor(255, 255, 255));
-    this.scene.events.off("update", this.update, this);
+    this.scene && this.scene.events.off("update", this.update, this);
     if (faded) {
       this.disableBody(true, true);
     } else {
@@ -58,6 +61,9 @@ export class HealthPickup extends Phaser.Physics.Arcade.Sprite {
   }
 
   triggerFade() {
+    if (!this.scene) {
+      return;
+    }
     this.fadingTween = this.scene.tweens.addCounter({
       from: 255,
       to: 0,
