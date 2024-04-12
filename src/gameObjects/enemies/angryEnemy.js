@@ -1,5 +1,6 @@
 import eventsCenter, { events } from "../../EventsCenter.js";
 import { BasicEnemy } from "./basicEnemy.js";
+import { blinkingTween, flashingTween } from "../../utils/tweens.js";
 
 export class AngryEnemy extends BasicEnemy {
   health = 2;
@@ -23,15 +24,14 @@ export class AngryEnemy extends BasicEnemy {
   die() {
     this.health--;
     if (this.health <= 0) {
+      this.hurtTween && this.hurtTween.remove();
+      this.postFX.clear();
       super.die();
       this.shootEvent.remove(false);
       return true;
     } else {
+      this.hurtTween = this.scene.tweens.add(flashingTween(this, 100, 0));
       return false;
-      // Todo__ Add tween for damage
-      // this.scene.tweens.add({
-      //   targets: this,
-      // })
     }
   }
 

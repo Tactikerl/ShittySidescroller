@@ -1,5 +1,6 @@
 import Phaser from "../lib/phaser.js";
 import eventsCenter, { events } from "../EventsCenter.js";
+import { blinkingTween } from "../utils/tweens.js";
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   lastFired = 0;
@@ -67,13 +68,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       [],
       this
     );
-    this.scene.add.tween({
-      targets: this,
-      duration: 10,
-      alpha: { getStart: () => 1, getEnd: () => 0 },
-      loop: 17,
-      yoyo: true,
-    });
+
+    this.scene.add.tween(blinkingTween(this, 10, 17));
   }
 
   update(time, delta, controls) {
