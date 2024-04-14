@@ -1,8 +1,10 @@
 import Phaser from "../../lib/phaser.js";
+import { flashingTween, bounceTween } from "../../utils/tweens.js";
 
 export class BasicEnemy extends Phaser.Physics.Arcade.Sprite {
   died = false;
   speed = 200;
+  health = 1;
 
   constructor(scene, x, y, texture, frame) {
     super(scene, x, y, texture, frame);
@@ -22,6 +24,17 @@ export class BasicEnemy extends Phaser.Physics.Arcade.Sprite {
       angle: { max: 45, min: -45 },
       emitting: false,
     });
+
+    this.hurtEmitter = scene.add.particles(0, 0, "star", {
+      speed: 100,
+      frame: 0,
+      scale: { start: 1, end: 0 },
+      lifespan: 2000,
+      alpha: { start: 1, end: 0 },
+      quantity: 10,
+      blendMode: "ADD",
+      emitting: false,
+    });
   }
 
   spawn(x, y) {
@@ -31,6 +44,30 @@ export class BasicEnemy extends Phaser.Physics.Arcade.Sprite {
     this.setCircle(16);
     this.setVelocityX(-this.speed);
     this.particles.start();
+    this.health = 1;
+  }
+
+  hurt() {
+    this.health--;
+    this.hurtEmitter.emitParticleAt(this.x, this.y);
+
+    this.hurtTween1 && this.hurtTween1.isActive() && this.hurtTween1.remove();
+    this.postFX.clear();
+    if (this.hurtTween2 && this.hurtTween2.isActive()) {
+      this.hurtTween2.remove();
+      this.scaleX = 1;
+      this.scaleY = 1;
+      this.angle = 0;
+    }
+
+    if (this.health <= 0) {
+      this.die();
+      return true;
+    } else {
+      this.hurtTween1 = this.scene.tweens.add(flashingTween(this, 100, 0));
+      this.hurtTween2 = this.scene.tweens.add(bounceTween(this, 100));
+      return false;
+    }
   }
 
   die() {

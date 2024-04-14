@@ -12,6 +12,7 @@ export class LustyEnemy extends BasicEnemy {
     super.spawn(x, y);
     this.lifeTime = 0;
     this.myBeloved = target;
+    this.health = 3;
   }
 
   getKillScore() {

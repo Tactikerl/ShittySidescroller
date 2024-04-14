@@ -19,6 +19,19 @@ export const flashingTween = (target, duration, loop) => {
   };
 };
 
+export const bounceTween = (target, duration) => {
+  return {
+    targets: target,
+    scaleX: 1.25,
+    scaleY: 0.75,
+    x: { value: "+=50", yoyo: false },
+    angle: "+=10",
+    yoyo: true,
+    duration,
+    ease: "Sine.easeInOut",
+  };
+};
+
 /*
     onUpdate: (tween) => {
       const value = Math.floor(tween.getValue());

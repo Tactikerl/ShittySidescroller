@@ -19,11 +19,14 @@ export class ZigzagEnemy extends BasicEnemy {
     });
   }
 
-  die() {
-    super.die();
+  hurt() {
+    const isDead = super.hurt();
 
-    this.shootEvent.remove(false);
-    return true;
+    if (isDead) {
+      this.shootEvent.remove(false);
+    }
+
+    return isDead;
   }
 
   getKillScore() {
