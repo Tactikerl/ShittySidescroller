@@ -19,6 +19,7 @@ export const flashingTween = (target, duration, loop) => {
   };
 };
 
+/**@returns {Phaser.Types.Tweens.TweenBuilderConfig}  */
 export const bounceTween = (target, duration) => {
   return {
     targets: target,
@@ -29,6 +30,11 @@ export const bounceTween = (target, duration) => {
     yoyo: true,
     duration,
     ease: "Sine.easeInOut",
+    onStop: () => {
+      target.scaleX = 1;
+      target.scaleY = 1;
+      target.angle = 0;
+    },
   };
 };
 

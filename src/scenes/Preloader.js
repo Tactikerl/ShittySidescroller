@@ -85,6 +85,7 @@ export class Preloader extends Phaser.Scene {
     this.load.audio("enemyShoot", "assets/error3.mp3");
     this.load.audio("pickup", "assets/pickup4.mp3");
     this.load.audio("explosionSfx", "assets/explosion2.mp3");
+    this.load.audio("hurt", "assets/hit3.mp3");
   }
 
   create() {

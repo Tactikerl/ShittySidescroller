@@ -35,11 +35,12 @@ var config = {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.NO_CENTER,
   },
+  fps: { target: 60 },
   input: { activePointers: 4 },
   render: {
     antialias: false,
     pixelArt: true,
-    roundPixels: true,
+    // roundPixels: true,
   },
 };
 

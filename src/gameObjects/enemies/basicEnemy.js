@@ -12,6 +12,7 @@ export class BasicEnemy extends Phaser.Physics.Arcade.Sprite {
     this.setFlipX(true);
 
     this.dieSound = scene.sound.get("explosionSfx");
+    this.hurtSound = scene.sound.get("hurt");
     this.particles = scene.add.particles(5, 0, "enemyStar", {
       speed: 100,
       scale: { start: 1, end: 0 },
@@ -54,10 +55,10 @@ export class BasicEnemy extends Phaser.Physics.Arcade.Sprite {
     this.hurtTween1 && this.hurtTween1.isActive() && this.hurtTween1.remove();
     this.postFX.clear();
     if (this.hurtTween2 && this.hurtTween2.isActive()) {
-      this.hurtTween2.remove();
-      this.scaleX = 1;
-      this.scaleY = 1;
-      this.angle = 0;
+      this.hurtTween2.stop();
+      // this.scaleX = 1;
+      // this.scaleY = 1;
+      // this.angle = 0;
     }
 
     if (this.health <= 0) {
@@ -66,6 +67,7 @@ export class BasicEnemy extends Phaser.Physics.Arcade.Sprite {
     } else {
       this.hurtTween1 = this.scene.tweens.add(flashingTween(this, 100, 0));
       this.hurtTween2 = this.scene.tweens.add(bounceTween(this, 100));
+      this.hurtSound.play();
       return false;
     }
   }

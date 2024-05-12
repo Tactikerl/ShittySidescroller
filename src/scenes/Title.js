@@ -93,6 +93,7 @@ export class Title extends Phaser.Scene {
     this.sound.add("pickup", { loop: false });
     this.sound.add("dash", { loop: false });
     this.sound.add("explosionSfx", { loop: false });
+    this.sound.add("hurt", { loop: false });
   }
 
   makeAnims() {
